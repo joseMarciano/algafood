@@ -5,11 +5,11 @@ import com.api.algafood.domain.model.Cozinha;
 import java.util.List;
 
 public interface CozinhaRepository {
-    List<Cozinha> listar();
+    List<Cozinha> findAll();
 
     Cozinha find(Long id);
 
-    Cozinha salvar(Cozinha cozinha);
+    Cozinha save(Cozinha cozinha);
 
-    void remover(Cozinha cozinha);
+    void remove(Long id);
 }

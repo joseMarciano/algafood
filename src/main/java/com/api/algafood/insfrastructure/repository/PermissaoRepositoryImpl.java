@@ -16,7 +16,7 @@ public class PermissaoRepositoryImpl implements PermissaoRepository {
     private EntityManager manager;
 
     @Override
-    public List<Permissao> listar() {
+    public List<Permissao> findAll() {
         return manager.createQuery("from Permissao", Permissao.class).getResultList();
     }
 
@@ -27,13 +27,13 @@ public class PermissaoRepositoryImpl implements PermissaoRepository {
 
     @Override
     @Transactional
-    public Permissao salvar(Permissao permissao) {
+    public Permissao save(Permissao permissao) {
         return manager.merge(permissao);
     }
 
     @Override
     @Transactional
-    public void remover(Permissao permissao) {
+    public void remove(Permissao permissao) {
         permissao = find(permissao.getId());
         manager.remove(permissao);
     }

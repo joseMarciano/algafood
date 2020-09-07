@@ -5,11 +5,11 @@ import com.api.algafood.domain.model.FormaPagamento;
 import java.util.List;
 
 public interface FormaPagamentoRepository {
-    List<FormaPagamento> listar();
+    List<FormaPagamento> findAll();
 
     FormaPagamento find(Long id);
 
-    FormaPagamento salvar(FormaPagamento formaPagamento);
+    FormaPagamento save(FormaPagamento formaPagamento);
 
-    void remover(FormaPagamento formaPagamento);
+    void remove(FormaPagamento formaPagamento);
 }

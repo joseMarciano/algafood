@@ -16,7 +16,7 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     private EntityManager manager;
 
     @Override
-    public List<Cidade> listar() {
+    public List<Cidade> findAll() {
         return manager.createQuery("from Cidade", Cidade.class).getResultList();
     }
 
@@ -27,13 +27,13 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Override
     @Transactional
-    public Cidade salvar(Cidade cidade) {
+    public Cidade save(Cidade cidade) {
         return manager.merge(cidade);
     }
 
     @Override
     @Transactional
-    public void remover(Cidade cidade) {
+    public void remove(Cidade cidade) {
         cidade = find(cidade.getId());
         manager.remove(cidade);
     }

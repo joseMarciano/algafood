@@ -17,7 +17,7 @@ public class FormaPagamentoImpl implements FormaPagamentoRepository {
     private EntityManager manager;
 
     @Override
-    public List<FormaPagamento> listar() {
+    public List<FormaPagamento> findAll() {
         return manager.createQuery("from FormaPagamento",FormaPagamento.class).getResultList();
     }
 
@@ -28,13 +28,13 @@ public class FormaPagamentoImpl implements FormaPagamentoRepository {
 
     @Override
     @Transactional
-    public FormaPagamento salvar(FormaPagamento formaPagamento) {
+    public FormaPagamento save(FormaPagamento formaPagamento) {
         return manager.merge(formaPagamento);
     }
 
     @Override
     @Transactional
-    public void remover(FormaPagamento formaPagamento) {
+    public void remove(FormaPagamento formaPagamento) {
         formaPagamento = find(formaPagamento.getId());
         manager.remove(formaPagamento);
     }

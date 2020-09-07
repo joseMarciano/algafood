@@ -6,12 +6,12 @@ import com.api.algafood.domain.model.Cozinha;
 import java.util.List;
 
 public interface CidadeRepository {
-    List<Cidade> listar();
+    List<Cidade> findAll();
 
     Cidade find(Long id);
 
-    Cidade salvar(Cidade cidade);
+    Cidade save(Cidade cidade);
 
-    void remover(Cidade cidade);
+    void remove(Cidade cidade);
 
 }

@@ -5,12 +5,12 @@ import com.api.algafood.domain.model.Estado;
 import java.util.List;
 
 public interface EstadoRepository {
-    List<Estado> listar();
+    List<Estado> findAll();
 
     Estado find(Long id);
 
 
-    Estado salvar(Estado estado);
+    Estado save(Estado estado);
 
-    void remover(Estado estado);
+    void remove(Estado estado);
 }

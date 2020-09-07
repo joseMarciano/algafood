@@ -3,6 +3,10 @@ package com.api.algafood.insfrastructure.repository;
 import com.api.algafood.domain.model.Cozinha;
 import com.api.algafood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +20,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     private EntityManager manager;
 
     @Override
-    public List<Cozinha> listar(){
+    public List<Cozinha> findAll(){
         return manager.createQuery("from Cozinha",Cozinha.class).getResultList();
     }
 
@@ -27,14 +31,18 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @Override
     @Transactional
-    public Cozinha salvar(Cozinha cozinha){
+    public Cozinha save(Cozinha cozinha){
         return manager.merge(cozinha);
     }
 
     @Override
     @Transactional
-    public void remover(Cozinha cozinha){
-        cozinha = find(cozinha.getId());
+    public void remove(Long id){
+        var cozinha = find(id);
+
+        if (cozinha == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(cozinha);
     }
 }
