@@ -3,14 +3,13 @@ package com.api.algafood.insfrastructure.repository;
 import com.api.algafood.domain.model.FormaPagamento;
 import com.api.algafood.domain.repository.FormaPagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.swing.*;
 import java.util.List;
 
-@Component
+@Repository
 public class FormaPagamentoImpl implements FormaPagamentoRepository {
 
     @Autowired

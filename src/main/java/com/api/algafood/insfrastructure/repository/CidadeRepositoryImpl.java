@@ -5,13 +5,13 @@ import com.api.algafood.domain.model.Cidade;
 import com.api.algafood.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Component
+@Repository
 public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Autowired
@@ -44,7 +44,7 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     public void remove(Long id) {
         var cidade = find(id);
 
-        if(cidade == null){
+        if (cidade == null) {
             throw new EmptyResultDataAccessException(1);
         }
         manager.remove(cidade);

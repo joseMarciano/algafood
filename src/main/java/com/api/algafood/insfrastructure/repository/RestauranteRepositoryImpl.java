@@ -3,13 +3,13 @@ package com.api.algafood.insfrastructure.repository;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Component
+@Repository
 public class RestauranteRepositoryImpl implements RestauranteRepository {
 
     @Autowired
@@ -17,12 +17,12 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
 
     @Override
     public List<Restaurante> findAll() {
-        return manager.createQuery("from Restaurante",Restaurante.class).getResultList();
+        return manager.createQuery("from Restaurante", Restaurante.class).getResultList();
     }
 
     @Override
     public Restaurante find(Long id) {
-        return manager.find(Restaurante.class,id);
+        return manager.find(Restaurante.class, id);
     }
 
     @Override
