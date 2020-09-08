@@ -1,8 +1,10 @@
 package com.api.algafood.insfrastructure.repository;
 
+import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Estado;
 import com.api.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +19,18 @@ public class EstadoRepositoryImpl implements EstadoRepository {
 
     @Override
     public List<Estado> findAll() {
-        return manager.createQuery("from Estado",Estado.class).getResultList();
+        return manager.createQuery("from Estado", Estado.class).getResultList();
     }
 
     @Override
     public Estado find(Long id) {
-        return manager.find(Estado.class,id);
+        var estado = manager.find(Estado.class, id);
+
+        if (estado == null) {
+            throw new EntidadeNaoEncontradaException(
+                    String.format("Entity with identifier %d not found", id));
+        }
+        return estado;
     }
 
     @Override
@@ -33,8 +41,12 @@ public class EstadoRepositoryImpl implements EstadoRepository {
 
     @Override
     @Transactional
-    public void remove(Estado estado) {
-        estado = find(estado.getId());
-        manager.remove(estado);
+    public void remove(Long id) {
+      var estado = find(id);
+
+      if(estado == null) throw new EmptyResultDataAccessException(1);
+
+      manager.remove(estado);
+
     }
 }

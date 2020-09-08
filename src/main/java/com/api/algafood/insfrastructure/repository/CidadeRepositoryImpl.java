@@ -1,8 +1,10 @@
 package com.api.algafood.insfrastructure.repository;
 
+import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Cidade;
 import com.api.algafood.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,13 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Override
     public Cidade find(Long id) {
-        return manager.find(Cidade.class,id);
+        var cidade = manager.find(Cidade.class, id);
+
+        if (cidade == null) {
+            throw new EntidadeNaoEncontradaException(
+                    String.format("Entity with identifier %d not found", id));
+        }
+        return cidade;
     }
 
     @Override
@@ -33,8 +41,12 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Override
     @Transactional
-    public void remove(Cidade cidade) {
-        cidade = find(cidade.getId());
+    public void remove(Long id) {
+        var cidade = find(id);
+
+        if(cidade == null){
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(cidade);
     }
 }

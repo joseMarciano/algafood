@@ -25,7 +25,7 @@ public class CozinhaService {
         try {
             repository.remove(id);
         } catch (EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(String.format("Entidade %d não encontrada",id));
+            throw new EntidadeNaoEncontradaException(String.format("Entity %d not found",id));
         }catch (DataIntegrityViolationException e) { // se tem conflito de constrait(FK em outra table)
             throw new EntidadeEmUsoException(
                     String.format("Entity %s with identifier %d is in use",repository.find(id).getNome(),id));  //lança a exception que criei
