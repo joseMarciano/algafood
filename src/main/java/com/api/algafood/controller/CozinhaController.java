@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -32,8 +33,9 @@ public class CozinhaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Cozinha> find(@PathVariable Long id) {
-        var cozinha = repository.find(id);
-        return (cozinha != null) ? ResponseEntity.ok(cozinha) : ResponseEntity.notFound().build();
+        Optional<Cozinha> cozinha = repository.findById(id);
+
+        return (cozinha.isPresent()) ? ResponseEntity.ok(cozinha.get()) : ResponseEntity.notFound().build();
     }
 
     @PostMapping

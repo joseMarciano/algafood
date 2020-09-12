@@ -23,12 +23,12 @@ public class CozinhaService {
 
     public void remove(Long id){
         try {
-            repository.remove(id);
+            repository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new EntidadeNaoEncontradaException(String.format("Entity %d not found",id));
         }catch (DataIntegrityViolationException e) { // se tem conflito de constrait(FK em outra table)
             throw new EntidadeEmUsoException(
-                    String.format("Entity %s with identifier %d is in use",repository.find(id).getNome(),id));  //lança a exception que criei
+                    String.format("Entity %s with identifier %d is in use",repository.findById(id).get().getNome(),id));  //lança a exception que criei
         }
     }
 

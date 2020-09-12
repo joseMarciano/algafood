@@ -2,13 +2,15 @@ package com.api.algafood.controller;
 
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Restaurante;
-import com.api.algafood.domain.repository.RestauranteRepository;
+import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.api.algafood.domain.service.RestauranteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -27,11 +29,12 @@ public class RestauranteController {
         return repository.findAll();
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurante> find(@PathVariable Long id) {
-        var restaurante = repository.find(id);
-        return (restaurante != null) ? ResponseEntity.ok(restaurante) : ResponseEntity.notFound().build();
+    public ResponseEntity<?> find(@PathVariable Long id) {
+        Optional<Restaurante> restaurante = repository.findById(id);
+
+        return (restaurante.isPresent()) ? ResponseEntity.ok(restaurante.get())
+                : ResponseEntity.badRequest().body("Entity not found");
     }
 
     @PostMapping

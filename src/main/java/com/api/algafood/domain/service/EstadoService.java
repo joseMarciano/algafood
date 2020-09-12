@@ -23,7 +23,7 @@ public class EstadoService {
 
     public void remove(Long id) {
         try {
-            repository.remove(id);
+            repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(String.format("Entity with identifier %d not found", id));
         } catch (DataIntegrityViolationException e) {

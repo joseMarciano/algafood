@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/estados")
@@ -30,11 +31,10 @@ public class EstadoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> find(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(repository.find(id));
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        Optional<Estado> estado = repository.findById(id);
+
+        return (estado.isPresent()) ? ResponseEntity.ok(estado.get())
+                                    : ResponseEntity.badRequest().body("Entity not found");
     }
 
     @PostMapping

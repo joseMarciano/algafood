@@ -1,15 +1,12 @@
 package com.api.algafood.domain.repository;
 
 import com.api.algafood.domain.model.Cozinha;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface CozinhaRepository {
-    List<Cozinha> findAll();
+@Repository
+public interface CozinhaRepository extends CustomJpaRepository<Cozinha, Long> {
 
-    Cozinha find(Long id);
-
-    Cozinha save(Cozinha cozinha);
-
-    void remove(Long id);
+    List<Cozinha> findByNomeContaining(String nome); // nome de função para colocar o like %nome%
 }
