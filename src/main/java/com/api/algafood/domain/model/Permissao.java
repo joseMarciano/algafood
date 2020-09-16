@@ -32,4 +32,5 @@ public class Permissao {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
 }

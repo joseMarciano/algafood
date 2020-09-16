@@ -1,7 +1,15 @@
 package com.api.algafood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "RESTAURANTES")
@@ -17,9 +25,36 @@ public class Restaurante {
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 
-    @ManyToOne
+    @JsonIgnore
+//    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "I_COZINHAS")
     private Cozinha cozinha;
+
+    @Embedded
+    @JsonIgnore
+    private Endereco endereco;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "RESTAURANTES_FORMAS_PAGAMENTO",
+    joinColumns = @JoinColumn(name = "I_RESTAURANTES"),
+    inverseJoinColumns = @JoinColumn(name = "I_FORMAS_PAGAMENTO"))
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    @Column(name = "DH_CADASTRO", nullable = false)
+    @JsonIgnore
+    @CreationTimestamp //informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que entidade foi salva pela primeira vez
+    private LocalDateTime dataCadastro;
+
+    @Column(name = "DH_ATUALIZACAO", nullable = false)
+    @JsonIgnore
+    @UpdateTimestamp // informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
+    private LocalDateTime dataAtualizacao;
+
+    @OneToMany(mappedBy = "restaurante")
+    @JsonIgnore
+    private List<Produto> produtos = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -51,6 +86,46 @@ public class Restaurante {
 
     public void setCozinha(Cozinha cozinha) {
         this.cozinha = cozinha;
+    }
+
+    public List<FormaPagamento> getFormasPagamento() {
+        return formasPagamento;
+    }
+
+    public void setFormasPagamento(List<FormaPagamento> formasPagamento) {
+        this.formasPagamento = formasPagamento;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
     }
 
     @Override
