@@ -22,7 +22,7 @@ public class Produto {
     private Boolean ativo;
 
     @ManyToOne
-    @JoinColumn(name = "I_RESTAURANTES")
+    @JoinColumn(name = "ID_RESTAURANTES")
     private Restaurante restaurante;
 
     public Long getId() {

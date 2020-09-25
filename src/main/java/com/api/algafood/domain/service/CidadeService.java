@@ -4,33 +4,33 @@ package com.api.algafood.domain.service;
 import com.api.algafood.domain.Exception.EntidadeEmUsoException;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Cidade;
-import com.api.algafood.domain.model.Estado;
 import com.api.algafood.domain.repository.CidadeRepository;
 import com.api.algafood.domain.repository.EstadoRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class CidadeService {
 
+    private static final String MSG_CIDADE_EM_USO
+            = "Entity 'Cidade' with identifier %d is in use";
+
+    private static final String MSG_CIDADE_NAO_ENCONTRADA
+            = "Entity 'Cidade' with identifier %d not found";
+
     private CidadeRepository repository;
-    private EstadoRepository estadoRepository;
+    private EstadoService estadoService;
+
 
     public CidadeService(CidadeRepository repository,
-                         EstadoRepository estadoRepository) {
+                         EstadoRepository estadoRepository, EstadoService estadoService) {
         this.repository = repository;
-        this.estadoRepository = estadoRepository;
+        this.estadoService = estadoService;
     }
 
     public Cidade save(Cidade cidade) {
-        Optional<Estado> estado = estadoRepository.findById(cidade.getEstado().getId());
-
-        estado.orElseThrow(() ->
-                new EntidadeNaoEncontradaException(String.format("Entity %d not found",cidade.getEstado().getId())));
-
+        estadoService.findById(cidade.getEstado().getId());
         return repository.save(cidade);
     }
 
@@ -39,12 +39,17 @@ public class CidadeService {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Entity with identifier %d not found", id));
+                    String.format(MSG_CIDADE_NAO_ENCONTRADA, id));
 
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Entity with identifier %d is in use", id));
+                    String.format(MSG_CIDADE_EM_USO, id));
         }
+    }
+
+    public Cidade findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
+                String.format("Entity with identifier %d not found",id)));
     }
 }
 

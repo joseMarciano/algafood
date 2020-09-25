@@ -1,8 +1,6 @@
 package com.api.algafood.controller;
 
 
-import com.api.algafood.domain.Exception.EntidadeEmUsoException;
-import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Cozinha;
 import com.api.algafood.domain.repository.CozinhaRepository;
 import com.api.algafood.domain.service.CozinhaService;
@@ -32,10 +30,8 @@ public class CozinhaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cozinha> find(@PathVariable Long id) {
-        Optional<Cozinha> cozinha = repository.findById(id);
-
-        return (cozinha.isPresent()) ? ResponseEntity.ok(cozinha.get()) : ResponseEntity.notFound().build();
+    public Cozinha find(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PostMapping
@@ -44,17 +40,10 @@ public class CozinhaController {
         return service.save(cozinha);
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-
-        try {
-            service.remove(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.remove(id);
     }
 }

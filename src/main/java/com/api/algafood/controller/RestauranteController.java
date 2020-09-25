@@ -1,6 +1,7 @@
 package com.api.algafood.controller;
 
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
+import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.api.algafood.domain.service.RestauranteService;
@@ -30,19 +31,20 @@ public class RestauranteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable Long id) {
-        Optional<Restaurante> restaurante = repository.findById(id);
-
-        return (restaurante.isPresent()) ? ResponseEntity.ok(restaurante.get())
-                : ResponseEntity.badRequest().body("Entity not found");
+    public Restaurante find(@PathVariable Long id) throws IllegalAccessException {
+        if(true){
+            throw new IllegalAccessException("teste");
+        }
+        return service.findById(id);
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Restaurante restaurante) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Restaurante save(@RequestBody Restaurante restaurante) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.save(restaurante));
+            return service.save(restaurante);
         } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            throw new NegocioException(e.getMessage());
         }
     }
 

@@ -1,15 +1,14 @@
 package com.api.algafood.controller;
 
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
+import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Cidade;
 import com.api.algafood.domain.repository.CidadeRepository;
 import com.api.algafood.domain.service.CidadeService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/cidades")
@@ -18,39 +17,57 @@ public class CidadeController {
     private CidadeRepository repository;
     private CidadeService service;
 
-    public CidadeController(CidadeRepository repository, CidadeService service) {
+
+    public CidadeController(CidadeRepository repository,
+                            CidadeService service
+    ) {
         this.repository = repository;
         this.service = service;
+
     }
 
     @GetMapping
-    public List<Cidade> findAll(){
+    public List<Cidade> findAll() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable Long id){
-        Optional<Cidade> cidade = repository.findById(id);
-            return (cidade.isPresent()) ? ResponseEntity.ok(cidade.get()) : ResponseEntity.badRequest().build();
+    public Cidade find(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Cidade cidade){
-        try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.save(cidade));
-        }catch (EntidadeNaoEncontradaException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cidade save(@RequestBody Cidade cidade) {
+        try {
+            return service.save(cidade);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new EntidadeNaoEncontradaException(e.getMessage());
         }
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable Long id){
-        try {
-            service.remove(id);
-           return ResponseEntity.noContent().build();
-        }catch (EntidadeNaoEncontradaException e){
-           return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remove(@PathVariable Long id) {
+        service.remove(id);
     }
+
+//    /*Quando a excessão for tratada, esse método é chamado e eu
+//     *retorno o que eu quiser (Estou capturando também as exceptions
+//     *causadas por EntidadeNaoEncontradaException... passando o throwable)
+//     */
+//    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+//    public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
+//        var problem = new Problema(LocalDateTime.now(),e.getMessage());
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+//    }
+//
+//    @ExceptionHandler(NegocioException.class)
+//    public ResponseEntity<?> handleNegocioException(NegocioException e){
+//        var problem = new Problema(LocalDateTime.now(), e.getMessage());
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+//    }
+
 
 }

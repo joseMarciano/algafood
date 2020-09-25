@@ -25,10 +25,10 @@ public class Restaurante {
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 
-    @JsonIgnore
+//    @JsonIgnore
 //    @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "I_COZINHAS")
+    @ManyToOne
+    @JoinColumn(name = "ID_COZINHAS")
     private Cozinha cozinha;
 
     @Embedded
@@ -38,16 +38,16 @@ public class Restaurante {
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "RESTAURANTES_FORMAS_PAGAMENTO",
-    joinColumns = @JoinColumn(name = "I_RESTAURANTES"),
-    inverseJoinColumns = @JoinColumn(name = "I_FORMAS_PAGAMENTO"))
+    joinColumns = @JoinColumn(name = "ID_RESTAURANTES"),
+    inverseJoinColumns = @JoinColumn(name = "ID_FORMAS_PAGAMENTO"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    @Column(name = "DH_CADASTRO", nullable = false)
-    @JsonIgnore
+    @Column(name = "DATA_CADASTRO", nullable = false)
+//    @JsonIgnore
     @CreationTimestamp //informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que entidade foi salva pela primeira vez
     private LocalDateTime dataCadastro;
 
-    @Column(name = "DH_ATUALIZACAO", nullable = false)
+    @Column(name = "DATA_ATUALIZACAO", nullable = false)
     @JsonIgnore
     @UpdateTimestamp // informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
     private LocalDateTime dataAtualizacao;
@@ -127,6 +127,8 @@ public class Restaurante {
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

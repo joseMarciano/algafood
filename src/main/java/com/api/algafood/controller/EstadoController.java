@@ -30,11 +30,8 @@ public class EstadoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable Long id) {
-        Optional<Estado> estado = repository.findById(id);
-
-        return (estado.isPresent()) ? ResponseEntity.ok(estado.get())
-                                    : ResponseEntity.badRequest().body("Entity not found");
+    public Estado find(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PostMapping
@@ -44,12 +41,8 @@ public class EstadoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable Long id) {
-        try {
-            service.remove(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException | EntidadeEmUsoException e ) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remove(@PathVariable Long id) {
+        service.remove(id);
     }
 }
