@@ -19,11 +19,33 @@ public class Problem {
         private LocalDateTime dataHora;
         private String mensagem;
      */
-    public Problem(Integer status, String type, String tittle, String detail) {
+
+    //Outros parametros opcionais... a parte da especificação
+    private String userMessage;
+
+    public Problem(Integer status,
+                   String type,
+                   String tittle,
+                   String detail) {
         this.status = status;
         this.type = type;
         this.tittle = tittle;
         this.detail = detail;
+    }
+
+/*Criei um construtor apenas para adicionar o userMessage,
+ não precisaria se eu estivesse utilizando o padrão Build com lombok
+ */
+    public Problem(Integer status,
+                   String type,
+                   String tittle,
+                   String detail,
+                   String userMessage) {
+        this.status = status;
+        this.type = type;
+        this.tittle = tittle;
+        this.detail = detail;
+        this.userMessage = userMessage;
     }
     public Problem(){
 
@@ -59,5 +81,13 @@ public class Problem {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getUserMessage() {
+        return userMessage;
+    }
+
+    public void setUserMessage(String userMessage) {
+        this.userMessage = userMessage;
     }
 }

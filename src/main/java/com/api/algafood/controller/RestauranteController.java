@@ -31,10 +31,7 @@ public class RestauranteController {
     }
 
     @GetMapping("/{id}")
-    public Restaurante find(@PathVariable Long id) throws IllegalAccessException {
-        if(true){
-            throw new IllegalAccessException("teste");
-        }
+    public Restaurante find(@PathVariable Long id){
         return service.findById(id);
     }
 

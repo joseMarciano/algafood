@@ -30,6 +30,11 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+    public static final String MSG_ERRO_GENERICA_USUARIO_FINAL =
+            "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
+            "problema persistir, entre em contato com o administrador do sistema";
+
+
     /*Quando a excessão for tratada, esse método é chamado e eu
      *retorno o que eu quiser (Estou capturando também as exceptions
      *causadas por EntidadeNaoEncontradaException... passando o throwable)
@@ -74,9 +79,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 //        var problem = new Problema(LocalDateTime.now(), e.getMessage());
 //        return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);  ]
         HttpStatus status = HttpStatus.CONFLICT;
+        var problem = problemBuilder(status, ProblemType.ENTIDADE_EM_USO, e.getMessage());
+        problem.setUserMessage(e.getMessage());
 
         return handleExceptionInternal(e,
-                problemBuilder(status, ProblemType.ENTIDADE_EM_USO, e.getMessage()),
+                problem,
                 new HttpHeaders(),
                 status,
                 request);
@@ -187,8 +194,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var status = HttpStatus.INTERNAL_SERVER_ERROR;
         var problemType = ProblemType.SYSTEM_ERROR;
-        var detail = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
-                "problema persistir, entre em contato com o administrador do sistema";
+        var detail = MSG_ERRO_GENERICA_USUARIO_FINAL;
 
 
         // Importante colocar o printStackTrace (pelo menos por enquanto, que não estamos
@@ -205,10 +211,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-
-
-
-
     private ResponseEntity<Object> handleIgnoredProperty(IgnoredPropertyException e,
                                                          HttpHeaders headers,
                                                          HttpStatus status,
@@ -216,10 +218,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String path = joinPath(e.getPath());
         ProblemType problemType = ProblemType.INVALID_PROPERTY;
         String detail = String.format("A propriedade '%s' está sendo ignorada pela aplicação", path);
-
+        var problem = problemBuilder(status, problemType, detail);
+        problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
 
         return handleExceptionInternal(e,
-                problemBuilder(status, problemType, detail),
+                problem,
                 new HttpHeaders(),
                 status,
                 request);
@@ -252,8 +255,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("A propriedade '%s' recebeu o valor '%s' que é de um tipo inválido." +
                 "Informar um valor compatível do tipo '%s'", path, e.getValue(), e.getTargetType().getSimpleName());
 
+        var problem = problemBuilder(status, problemType, detail);
+        problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
+
         return handleExceptionInternal(e,
-                problemBuilder(status, problemType, detail),
+                problem,
                 new HttpHeaders(),
                 status,
                 request);
