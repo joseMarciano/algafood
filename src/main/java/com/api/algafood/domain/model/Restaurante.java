@@ -5,7 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,10 +20,14 @@ public class Restaurante {
     private Long id;
 
     @Column(name = "NOME")
-    @NotNull
+    //@NotNull
+    //@NotEmpty
+    @NotBlank(message = "O campo 'nome' é obrigatório")
     private String nome;
 
     @Column(name = "TAXA_FRETE")
+    @DecimalMin(value = "1", message = "Taxa frete deve ser maior ou igual a {value}")
+    //@PositiveOrZero
     private BigDecimal taxaFrete;
 
     //    @JsonIgnore
