@@ -22,7 +22,7 @@ public class PermissaoRepositoryImpl implements PermissaoRepository {
 
     @Override
     public Permissao find(Long id) {
-        return manager.find(Permissao.class,id);
+        return manager.find(Permissao.class, id);
     }
 
     @Override

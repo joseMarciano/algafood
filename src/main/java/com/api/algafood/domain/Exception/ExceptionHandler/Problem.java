@@ -34,9 +34,9 @@ public class Problem {
         this.detail = detail;
     }
 
-/*Criei um construtor apenas para adicionar o userMessage,
- não precisaria se eu estivesse utilizando o padrão Build com lombok
- */
+    /*Criei um construtor apenas para adicionar o userMessage,
+     não precisaria se eu estivesse utilizando o padrão Build com lombok
+     */
     public Problem(Integer status,
                    String type,
                    String tittle,
@@ -48,7 +48,8 @@ public class Problem {
         this.detail = detail;
         this.userMessage = userMessage;
     }
-    public Problem(){
+
+    public Problem() {
 
     }
 

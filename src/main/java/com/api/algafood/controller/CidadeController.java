@@ -1,7 +1,6 @@
 package com.api.algafood.controller;
 
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
-import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Cidade;
 import com.api.algafood.domain.repository.CidadeRepository;
 import com.api.algafood.domain.service.CidadeService;

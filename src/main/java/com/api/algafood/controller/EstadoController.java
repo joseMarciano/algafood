@@ -1,16 +1,12 @@
 package com.api.algafood.controller;
 
-import com.api.algafood.domain.Exception.EntidadeEmUsoException;
-import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Estado;
 import com.api.algafood.domain.repository.EstadoRepository;
 import com.api.algafood.domain.service.EstadoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/estados")

@@ -1,7 +1,6 @@
 package com.api.algafood.domain.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "COZINHAS")

@@ -17,12 +17,12 @@ public class FormaPagamentoImpl implements FormaPagamentoRepository {
 
     @Override
     public List<FormaPagamento> findAll() {
-        return manager.createQuery("from FormaPagamento",FormaPagamento.class).getResultList();
+        return manager.createQuery("from FormaPagamento", FormaPagamento.class).getResultList();
     }
 
     @Override
     public FormaPagamento find(Long id) {
-        return manager.find(FormaPagamento.class,id);
+        return manager.find(FormaPagamento.class, id);
     }
 
     @Override

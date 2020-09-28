@@ -17,8 +17,8 @@ public class Grupo {
 
     @ManyToMany
     @JoinTable(name = "GRUPOS_PERMISSOES",
-               joinColumns = @JoinColumn(name = "ID_GRUPOS"),
-               inverseJoinColumns = @JoinColumn(name = "ID_PERMISSOES") )
+            joinColumns = @JoinColumn(name = "ID_GRUPOS"),
+            inverseJoinColumns = @JoinColumn(name = "ID_PERMISSOES"))
     private List<Permissao> permissoes = new ArrayList<>();
 
     public Long getId() {

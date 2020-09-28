@@ -5,11 +5,9 @@ import com.api.algafood.domain.model.Cozinha;
 import com.api.algafood.domain.repository.CozinhaRepository;
 import com.api.algafood.domain.service.CozinhaService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController

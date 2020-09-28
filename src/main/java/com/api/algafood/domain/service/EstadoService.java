@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EstadoService {
 
-    private static final String MSG_ESTADO_EM_USO  =
+    private static final String MSG_ESTADO_EM_USO =
             "Entity 'Estado' with identifier %d is in use";
 
     private static final String MSG_ESTADO_NAO_ENCONTRADO =
@@ -40,6 +40,6 @@ public class EstadoService {
     public Estado findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_ESTADO_NAO_ENCONTRADO,id)));
+                        String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RestauranteService {
 
-    private static final String MSG_RESTAURANTE_EM_USO  =
+    private static final String MSG_RESTAURANTE_EM_USO =
             "Entity 'Restaurante' with identifier %d is in use";
 
     private static final String MSG_RESTAURANTE_NAO_ENCONTRADO =

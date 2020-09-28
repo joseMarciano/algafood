@@ -2,7 +2,6 @@ package com.api.algafood.domain.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Table(name = "PRODUTOS")

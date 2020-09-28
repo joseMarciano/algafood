@@ -6,12 +6,9 @@ import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.api.algafood.domain.service.RestauranteService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -31,7 +28,7 @@ public class RestauranteController {
     }
 
     @GetMapping("/{id}")
-    public Restaurante find(@PathVariable Long id){
+    public Restaurante find(@PathVariable Long id) {
         return service.findById(id);
     }
 

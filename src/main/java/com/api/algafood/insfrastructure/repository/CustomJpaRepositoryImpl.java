@@ -1,16 +1,13 @@
 package com.api.algafood.insfrastructure.repository;
 
-import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import java.util.Optional;
 
 
-public class CustomJpaRepositoryImpl<T,ID> extends SimpleJpaRepository<T,ID> implements CustomJpaRepository<T,ID> {
+public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements CustomJpaRepository<T, ID> {
 
     private EntityManager manager;
 

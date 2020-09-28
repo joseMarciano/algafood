@@ -1,7 +1,6 @@
 package com.api.algafood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -25,7 +24,7 @@ public class Restaurante {
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 
-//    @JsonIgnore
+    //    @JsonIgnore
 //    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @ManyToOne
     @JoinColumn(name = "ID_COZINHAS")
@@ -38,18 +37,20 @@ public class Restaurante {
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "RESTAURANTES_FORMAS_PAGAMENTO",
-    joinColumns = @JoinColumn(name = "ID_RESTAURANTES"),
-    inverseJoinColumns = @JoinColumn(name = "ID_FORMAS_PAGAMENTO"))
+            joinColumns = @JoinColumn(name = "ID_RESTAURANTES"),
+            inverseJoinColumns = @JoinColumn(name = "ID_FORMAS_PAGAMENTO"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
     @Column(name = "DATA_CADASTRO", nullable = false)
 //    @JsonIgnore
-    @CreationTimestamp //informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que entidade foi salva pela primeira vez
+    @CreationTimestamp
+    //informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que entidade foi salva pela primeira vez
     private LocalDateTime dataCadastro;
 
     @Column(name = "DATA_ATUALIZACAO", nullable = false)
     @JsonIgnore
-    @UpdateTimestamp // informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
+    @UpdateTimestamp
+    // informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "restaurante")
@@ -127,7 +128,6 @@ public class Restaurante {
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
     }
-
 
 
     @Override
