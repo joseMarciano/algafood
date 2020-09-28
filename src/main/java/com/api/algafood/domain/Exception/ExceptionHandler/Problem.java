@@ -3,6 +3,7 @@ package com.api.algafood.domain.Exception.ExceptionHandler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /*               RFC 7807
  *      Padronização de respostas de erro
@@ -23,6 +24,7 @@ public class Problem {
     //Outros parametros opcionais... a parte da especificação
     private String userMessage;
     private LocalDateTime timeStamp;
+    private List<Field> fields;
 
     public Problem(Integer status,
                    String type,
@@ -99,5 +101,42 @@ public class Problem {
 
     public LocalDateTime getTimeStamp() {
         return timeStamp;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
+    }
+
+    /*Criação de uma classe Field para representar os campos
+        inválidos para enviar como resposta no body
+         */
+    public static class Field{
+
+        private String name;
+        private String userMessage;
+
+        public Field(String name, String userMessage) {
+            this.name = name;
+            this.userMessage = userMessage;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getUserMessage() {
+            return userMessage;
+        }
+
+        public void setUserMessage(String userMessage) {
+            this.userMessage = userMessage;
+        }
     }
 }

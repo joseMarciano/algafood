@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -238,9 +239,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         final String MSG_CAMPOS_INVALIDOS = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 
-        var problem = problemBuilder(status,ProblemType.INVALID_DATAS,MSG_CAMPOS_INVALIDOS);
+        BindingResult bindingResult = e.getBindingResult();
+
+        /*Para cada bindingResult eu insttancio um
+        novo Problem.Field e adiciono em problemFields
+         */
+        List<Problem.Field> problemFields = bindingResult.getFieldErrors()
+                .stream()
+                .map(fieldError -> new Problem.Field(fieldError.getField(),fieldError.getDefaultMessage())).collect(Collectors.toList());
+
+        var problem = problemBuilder(status, ProblemType.INVALID_DATAS, MSG_CAMPOS_INVALIDOS);
         problem.setTimeStamp(LocalDateTime.now());
         problem.setUserMessage(MSG_CAMPOS_INVALIDOS);
+        problem.setFields(problemFields);
 
         return handleExceptionInternal(e,
                 problem,
