@@ -8,6 +8,7 @@ import com.api.algafood.domain.service.RestauranteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,7 +35,7 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante save(@RequestBody Restaurante restaurante) {
+    public Restaurante save(@RequestBody @Valid Restaurante restaurante) {
         try {
             return service.save(restaurante);
         } catch (EntidadeNaoEncontradaException e) {
