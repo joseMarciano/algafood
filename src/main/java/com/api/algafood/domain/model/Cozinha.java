@@ -1,6 +1,7 @@
 package com.api.algafood.domain.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "COZINHAS")
@@ -8,6 +9,7 @@ public class Cozinha {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
 
     @Column(name = "NOME")

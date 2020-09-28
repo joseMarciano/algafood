@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,6 +33,8 @@ public class Restaurante {
 
     //    @JsonIgnore
 //    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @Valid //Fazendo validação em cascata ---> Só colocando valid ele entra na entidade e faz as validações que estão la dentro
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "ID_COZINHAS")
     private Cozinha cozinha;
