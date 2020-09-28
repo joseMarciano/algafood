@@ -8,8 +8,8 @@ public enum ProblemType {
     UNKNOWN_BODY("body-format-unknow", "Mensagem do corpo incompreensível"),
     INVALID_PROPERTY("invalid-property", "Propriedade inválida"),
     UNKNOWN_PROPERTY("unknown-property", "Propriedade não reconhecida"),
-    INVALID_PARAMETER("invalid-parameter", "Parâmetro inválido");
-
+    INVALID_PARAMETER("invalid-parameter", "Parâmetro inválido"),
+    INVALID_DATAS("invalid-datas", "Dados inválidos");
 
     private String title;
     private String url;

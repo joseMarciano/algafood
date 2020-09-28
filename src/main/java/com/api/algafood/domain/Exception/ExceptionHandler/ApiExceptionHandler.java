@@ -8,11 +8,13 @@ import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -228,6 +230,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 request);
     }
 
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
+                                                                  HttpHeaders headers,
+                                                                  HttpStatus status,
+                                                                  WebRequest request) {
+        final String MSG_CAMPOS_INVALIDOS = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+
+        var problem = problemBuilder(status,ProblemType.INVALID_DATAS,MSG_CAMPOS_INVALIDOS);
+        problem.setTimeStamp(LocalDateTime.now());
+        problem.setUserMessage(MSG_CAMPOS_INVALIDOS);
+
+        return handleExceptionInternal(e,
+                problem,
+                new HttpHeaders(),
+                status,
+                request);
+    }
 
     private ResponseEntity<Object> handleIgnoredProperty(IgnoredPropertyException e,
                                                          HttpHeaders headers,
