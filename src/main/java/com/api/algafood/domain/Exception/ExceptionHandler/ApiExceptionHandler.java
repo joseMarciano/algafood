@@ -20,6 +20,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String MSG_ERRO_GENERICA_USUARIO_FINAL =
             "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
-            "problema persistir, entre em contato com o administrador do sistema";
+                    "problema persistir, entre em contato com o administrador do sistema";
 
 
     /*Quando a excessão for tratada, esse método é chamado e eu
@@ -42,12 +43,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
                                                                   WebRequest request) {
-//        var problem = new Problema(LocalDateTime.now(),e.getMessage());
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+
         HttpStatus status = HttpStatus.NOT_FOUND;
+        var problem = problemBuilder(status, ProblemType.RECURSO_NAO_ENCONTRADO, e.getMessage());
+        problem.setUserMessage("A entidade não foi encontrada");
+        problem.setTimeStamp(LocalDateTime.now());
+
         return handleExceptionInternal(
                 e,
-                problemBuilder(status, ProblemType.RECURSO_NAO_ENCONTRADO, e.getMessage()),
+                problem,
                 new HttpHeaders(),
                 status,
                 request);// -- Usando o handleExceptionInternal nos métodos que eu criei para tratar as exceptions
@@ -55,12 +59,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NegocioException.class)
     public ResponseEntity<?> handleNegocioException(NegocioException e, WebRequest request) {
-//        var problem = new Problema(LocalDateTime.now(), e.getMessage());
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        var problem = problemBuilder(status, ProblemType.ERRO_NEGOCIO, e.getMessage());
+        problem.setUserMessage("Erro de negócio");
+        problem.setTimeStamp(LocalDateTime.now());
+
         return handleExceptionInternal(
                 e,
-                problemBuilder(status, ProblemType.ERRO_NEGOCIO, e.getMessage()),
+                problem,
                 new HttpHeaders(),
                 status,
                 request);
@@ -76,11 +83,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         }*/
     @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException e, WebRequest request) {
-//        var problem = new Problema(LocalDateTime.now(), e.getMessage());
-//        return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);  ]
+
         HttpStatus status = HttpStatus.CONFLICT;
         var problem = problemBuilder(status, ProblemType.ENTIDADE_EM_USO, e.getMessage());
         problem.setUserMessage(e.getMessage());
+        problem.setTimeStamp(LocalDateTime.now());
 
         return handleExceptionInternal(e,
                 problem,
@@ -105,11 +112,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             var problem = new Problem();
             problem.setTittle(status.getReasonPhrase());
             problem.setStatus(status.value());
+            problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
+            problem.setTimeStamp(LocalDateTime.now());
             body = problem;
         } else if (body instanceof String) {
             var problem = new Problem();
             problem.setTittle((String) body);
             problem.setStatus(status.value());
+            problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
+            problem.setTimeStamp(LocalDateTime.now());
             body = problem;
         }
         return super.handleExceptionInternal(ex, body, headers, status, request);
@@ -118,11 +129,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        if(e instanceof MethodArgumentTypeMismatchException){
-          return handleMethodArgumentTypeMismatchException((MethodArgumentTypeMismatchException)e,
-                  new HttpHeaders(),
-                  status,
-                  request);
+        if (e instanceof MethodArgumentTypeMismatchException) {
+            return handleMethodArgumentTypeMismatchException((MethodArgumentTypeMismatchException) e,
+                    new HttpHeaders(),
+                    status,
+                    request);
         }
         return super.handleTypeMismatch(e, headers, status, request);
     }
@@ -133,9 +144,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                              WebRequest request) {
         var problemType = ProblemType.INVALID_PARAMETER;
         var detail = String.format("O parâmetro de URL '%s' recebeu o valor '%s', que é de um tipo inválido." +
-                "Corrija e informe um valor compatível com o tipo '%s'",e.getName(),e.getValue(),e.getRequiredType().getSimpleName());
+                "Corrija e informe um valor compatível com o tipo '%s'", e.getName(), e.getValue(), e.getRequiredType().getSimpleName());
+        var problem = problemBuilder(status, problemType, detail);
+        problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
+        problem.setTimeStamp(LocalDateTime.now());
         return handleExceptionInternal(e,
-                problemBuilder(status,problemType,detail),
+                problem,
                 httpHeaders,
                 status,
                 request);
@@ -145,11 +159,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         var problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
-        var detail  = String.format("O recurso '%s', que você tentou acessar, é inexistente",e.getRequestURL());
+        var detail = String.format("O recurso '%s', que você tentou acessar, é inexistente", e.getRequestURL());
 
+
+        var problem = problemBuilder(status, problemType, detail);
+        problem.setUserMessage("Você tentou acessar um recurso inexistente.Por favor acesse um recurso correto");
+        problem.setTimeStamp(LocalDateTime.now());
 
         return handleExceptionInternal(e,
-                problemBuilder(status,problemType,detail),
+                problem,
                 headers,
                 status,
                 request);
@@ -190,7 +208,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleUncaugth(Exception e, WebRequest request){
+    public ResponseEntity<?> handleUncaugth(Exception e, WebRequest request) {
 
         var status = HttpStatus.INTERNAL_SERVER_ERROR;
         var problemType = ProblemType.SYSTEM_ERROR;
@@ -204,7 +222,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         e.printStackTrace();
 
         return handleExceptionInternal(e,
-                problemBuilder(status,problemType,detail),
+                problemBuilder(status, problemType, detail),
                 new HttpHeaders(),
                 status,
                 request);
@@ -257,6 +275,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var problem = problemBuilder(status, problemType, detail);
         problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
+        problem.setTimeStamp(LocalDateTime.now());
 
         return handleExceptionInternal(e,
                 problem,

@@ -22,6 +22,7 @@ public class Problem {
 
     //Outros parametros opcionais... a parte da especificação
     private String userMessage;
+    private LocalDateTime timeStamp;
 
     public Problem(Integer status,
                    String type,
@@ -89,5 +90,13 @@ public class Problem {
 
     public void setUserMessage(String userMessage) {
         this.userMessage = userMessage;
+    }
+
+    public void setTimeStamp(LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
     }
 }
