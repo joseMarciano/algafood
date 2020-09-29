@@ -1,6 +1,13 @@
 package com.api.algafood.domain.model;
 
+import com.api.algafood.Groups;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 @Entity
 @Table(name = "CIDADES")
@@ -11,10 +18,15 @@ public class Cidade {
     private Long id;
 
     @Column(name = "NOME")
+    @NotBlank(message = "O campo 'nome' é obrigatório")
     private String nome;
+
 
     @ManyToOne
     @JoinColumn(name = "ID_ESTADOS")
+    @Valid
+    @NotNull(message = "O campo 'estado' é obrigatório")
+    @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     private Estado estado;
 
     public Long getId() {
