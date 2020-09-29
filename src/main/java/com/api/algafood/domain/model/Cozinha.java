@@ -12,7 +12,7 @@ public class Cozinha {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = Groups.CadastroRestaurantes.class ) // Os groups recebe qualquer tipo(class,interface etc...)
+    @NotNull(groups = Groups.CozinhaId.class ) // Os groups recebe qualquer tipo(class,interface etc...)
     private Long id;
 
     @Column(name = "NOME")

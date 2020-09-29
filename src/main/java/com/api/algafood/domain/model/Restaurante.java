@@ -8,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,18 +26,19 @@ public class Restaurante {
     @Column(name = "NOME")
     //@NotNull
     //@NotEmpty
-    @NotBlank(message = "O campo 'nome' é obrigatório",groups = Groups.CadastroRestaurantes.class)
+    @NotBlank(message = "O campo 'nome' é obrigatório")
     private String nome;
 
     @Column(name = "TAXA_FRETE")
-    @DecimalMin(value = "1", message = "Taxa frete deve ser maior ou igual a {value}",groups = Groups.CadastroRestaurantes.class)
+    @DecimalMin(value = "1", message = "Taxa frete deve ser maior ou igual a {value}",groups = Groups.CozinhaId.class)
     //@PositiveOrZero
     private BigDecimal taxaFrete;
 
     //    @JsonIgnore
 //    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @Valid //Fazendo validação em cascata ---> Só colocando valid ele entra na entidade e faz as validações que estão la dentro
-    @NotNull(groups = Groups.CadastroRestaurantes.class)
+    @ConvertGroup(from = Default.class,to = Groups.CozinhaId.class)
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "ID_COZINHAS")
     private Cozinha cozinha;
