@@ -1,6 +1,9 @@
 package com.api.algafood.domain.model;
 
+import com.api.algafood.Groups;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -9,10 +12,11 @@ public class Cozinha {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @NotNull(groups = Groups.CadastroRestaurantes.class ) // Os groups recebe qualquer tipo(class,interface etc...)
     private Long id;
 
     @Column(name = "NOME")
+    @NotBlank(message = "O campo 'nome' é obrigatório")
     private String nome;
 
     public Long getId() {

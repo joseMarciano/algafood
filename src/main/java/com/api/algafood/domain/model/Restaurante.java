@@ -1,5 +1,6 @@
 package com.api.algafood.domain.model;
 
+import com.api.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,18 +24,18 @@ public class Restaurante {
     @Column(name = "NOME")
     //@NotNull
     //@NotEmpty
-    @NotBlank(message = "O campo 'nome' é obrigatório")
+    @NotBlank(message = "O campo 'nome' é obrigatório",groups = Groups.CadastroRestaurantes.class)
     private String nome;
 
     @Column(name = "TAXA_FRETE")
-    @DecimalMin(value = "1", message = "Taxa frete deve ser maior ou igual a {value}")
+    @DecimalMin(value = "1", message = "Taxa frete deve ser maior ou igual a {value}",groups = Groups.CadastroRestaurantes.class)
     //@PositiveOrZero
     private BigDecimal taxaFrete;
 
     //    @JsonIgnore
 //    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @Valid //Fazendo validação em cascata ---> Só colocando valid ele entra na entidade e faz as validações que estão la dentro
-    @NotNull
+    @NotNull(groups = Groups.CadastroRestaurantes.class)
     @ManyToOne
     @JoinColumn(name = "ID_COZINHAS")
     private Cozinha cozinha;
