@@ -18,14 +18,14 @@ public class Cidade {
     private Long id;
 
     @Column(name = "NOME")
-    @NotBlank(message = "O campo 'nome' é obrigatório")
+    @NotBlank
     private String nome;
 
 
     @ManyToOne
     @JoinColumn(name = "ID_ESTADOS")
     @Valid
-    @NotNull(message = "O campo 'estado' é obrigatório")
+    @NotNull
     @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     private Estado estado;
 

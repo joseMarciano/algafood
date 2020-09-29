@@ -17,7 +17,7 @@ public class Estado {
     private Long id;
 
     @Column(name = "NOME")
-    @NotBlank(message = "O campo 'nome' é obrigatório")
+    @NotBlank
     private String nome;
 
     public Long getId() {

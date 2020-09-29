@@ -26,11 +26,11 @@ public class Restaurante {
     @Column(name = "NOME")
     //@NotNull
     //@NotEmpty
-    @NotBlank(message = "O campo 'nome' é obrigatório")
+    @NotBlank
     private String nome;
 
     @Column(name = "TAXA_FRETE")
-    @DecimalMin(value = "1", message = "Taxa frete deve ser maior ou igual a {value}",groups = Groups.CozinhaId.class)
+    @DecimalMin(value = "1",groups = Groups.CozinhaId.class)
     //@PositiveOrZero
     private BigDecimal taxaFrete;
 
