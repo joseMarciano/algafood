@@ -30,8 +30,9 @@ public class Restaurante {
     private String nome;
 
     @Column(name = "TAXA_FRETE")
-    @DecimalMin(value = "1",groups = Groups.CozinhaId.class)
-    //@PositiveOrZero
+//    @DecimalMin(value = "1",groups = Groups.CozinhaId.class)
+    @PositiveOrZero
+    @NotNull
     private BigDecimal taxaFrete;
 
     //    @JsonIgnore
