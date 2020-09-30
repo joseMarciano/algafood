@@ -1,6 +1,6 @@
 package com.api.algafood.domain.model;
 
-import com.api.algafood.Groups;
+import core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

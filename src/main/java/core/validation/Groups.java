@@ -1,4 +1,4 @@
-package com.api.algafood;
+package core.validation;
 
 public interface Groups {
 
