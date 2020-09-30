@@ -1,6 +1,6 @@
 package com.api.algafood.domain.model;
 
-import core.validation.Groups;
+import com.api.algafood.validation.core.Groups;
 
 import javax.persistence.*;
 import javax.validation.Valid;

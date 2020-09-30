@@ -1,4 +1,4 @@
-package core.validation;
+package com.api.algafood.validation.core;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -12,14 +12,16 @@ public class ValidationConfig {
      *LocalValidatorFactoryBean é a classe que faz integração e
      *configuração do BeanValidation com o Spring
      */
+
     @Bean
-    public LocalValidatorFactoryBean validatorFactoryBean(MessageSource messageSource) {
+    public LocalValidatorFactoryBean validator(MessageSource messageSource) {
         /*
          *MessageSource é a classe responsável
          *por ler os parametros de messages.properties
          *e fazer a resolução de mensagens
          *
          */
+
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource);
         System.out.println("********************************************");
