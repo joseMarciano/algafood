@@ -1,15 +1,15 @@
 package com.api.algafood.domain.model;
 
 import com.api.algafood.validation.core.Groups;
-import com.api.algafood.validation.core.Multiplo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.api.algafood.validation.core.TaxaFrete;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
@@ -26,23 +26,17 @@ public class Restaurante {
     private Long id;
 
     @Column(name = "NOME")
-    //@NotNull
-    //@NotEmpty
     @NotBlank
     private String nome;
 
     @Column(name = "TAXA_FRETE")
-//    @DecimalMin(value = "1",groups = Groups.CozinhaId.class)
-//    @PositiveOrZero
-//    @TaxaFrete
-    @Multiplo(numero = 5)
+    @PositiveOrZero
     @NotNull
     private BigDecimal taxaFrete;
 
-    //    @JsonIgnore
-//    @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @Valid //Fazendo validação em cascata ---> Só colocando valid ele entra na entidade e faz as validações que estão la dentro
-    @ConvertGroup(from = Default.class,to = Groups.CozinhaId.class)
+    @Valid
+//Fazendo validação em cascata ---> Só colocando valid ele entra na entidade e faz as validações que estão la dentro
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull
     @ManyToOne
     @JoinColumn(name = "ID_COZINHAS")
@@ -60,15 +54,14 @@ public class Restaurante {
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
     @Column(name = "DATA_CADASTRO", nullable = false)
-//    @JsonIgnore
     @CreationTimestamp
-    //informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que entidade foi salva pela primeira vez
+//informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que entidade foi salva pela primeira vez
     private LocalDateTime dataCadastro;
 
     @Column(name = "DATA_ATUALIZACAO", nullable = false)
     @JsonIgnore
     @UpdateTimestamp
-    // informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
+// informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "restaurante")
