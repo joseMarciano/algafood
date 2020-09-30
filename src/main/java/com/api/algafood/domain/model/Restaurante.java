@@ -1,6 +1,7 @@
 package com.api.algafood.domain.model;
 
-import com.api.algafood.validation.core.Groups;
+import com.api.algafood.core.validation.ValorZeroIncluirDescricao;
+import com.api.algafood.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluirDescricao(valorField = "taxaFrete",descricaoField = "nome",descricaoObrigatoria = "Frete Grátis")
 @Entity
 @Table(name = "RESTAURANTES")
 public class Restaurante {

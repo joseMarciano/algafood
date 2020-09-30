@@ -1,4 +1,4 @@
-package com.api.algafood.validation.core;
+package com.api.algafood.core.validation;
 
 
 import javax.validation.Constraint;

@@ -1,5 +1,7 @@
-package com.api.algafood.validation.core;
+package com.api.algafood.core.validation;
 
+
+import com.api.algafood.core.validation.Multiplo;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

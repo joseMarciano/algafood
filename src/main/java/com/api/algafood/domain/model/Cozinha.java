@@ -1,6 +1,6 @@
 package com.api.algafood.domain.model;
 
-import com.api.algafood.validation.core.Groups;
+import com.api.algafood.core.validation.Groups;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
