@@ -1,6 +1,7 @@
 package com.api.algafood.domain.model;
 
 import com.api.algafood.validation.core.Groups;
+import com.api.algafood.validation.core.Multiplo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.api.algafood.validation.core.TaxaFrete;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,7 +34,8 @@ public class Restaurante {
     @Column(name = "TAXA_FRETE")
 //    @DecimalMin(value = "1",groups = Groups.CozinhaId.class)
 //    @PositiveOrZero
-    @TaxaFrete
+//    @TaxaFrete
+    @Multiplo(numero = 5)
     @NotNull
     private BigDecimal taxaFrete;
 
