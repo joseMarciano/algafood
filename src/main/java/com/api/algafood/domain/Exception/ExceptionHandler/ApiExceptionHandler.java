@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +28,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 /* Essa anotação permite que todas as excessões dos controladores serão tratadas aqui
@@ -250,17 +249,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         /*Para cada bindingResult eu insttancio um
         novo Problem.Field e adiciono em problemFields
          */
-        List<Problem.Field> problemFields = bindingResult.getFieldErrors()
+        List<Problem.Objeto> problemObjetos = bindingResult.getAllErrors()
                 .stream()
-                .map(fieldError -> {
-                    var message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                   return new Problem.Field(fieldError.getField(),message);
+                .map(objectError -> {
+                    var message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+                    var name = objectError.getObjectName();
+
+                    //Um objectError pode ser um fieldError.. mas não necessariamente ele é...
+                    if(objectError instanceof FieldError){
+                        name = ((FieldError) objectError).getField(); //sobrescreve a variavel nome com o valor do getField
+                    }
+
+
+
+                   return new Problem.Objeto(name,message);
                 }).collect(Collectors.toList());
+
+
 
         var problem = problemBuilder(status, ProblemType.INVALID_DATAS, MSG_CAMPOS_INVALIDOS);
         problem.setTimeStamp(LocalDateTime.now());
         problem.setUserMessage(MSG_CAMPOS_INVALIDOS);
-        problem.setFields(problemFields);
+        problem.setObjetos(problemObjetos);
 
         return handleExceptionInternal(e,
                 problem,

@@ -24,7 +24,7 @@ public class Problem {
     //Outros parametros opcionais... a parte da especificação
     private String userMessage;
     private LocalDateTime timeStamp;
-    private List<Field> fields;
+    private List<Objeto> objetos;
 
     public Problem(Integer status,
                    String type,
@@ -103,22 +103,23 @@ public class Problem {
         return timeStamp;
     }
 
-    public List<Field> getFields() {
-        return fields;
+    public List<Objeto> getObjetos() {
+        return objetos;
     }
-    public void setFields(List<Field> fields) {
-        this.fields = fields;
+
+    public void setObjetos(List<Objeto> objetos) {
+        this.objetos = objetos;
     }
 
     /*Criação de uma classe Field para representar os campos
-        inválidos para enviar como resposta no body
-         */
-    public static class Field{
+            inválidos para enviar como resposta no body
+             */
+    public static class Objeto {
 
         private String name;
         private String userMessage;
 
-        public Field(String name, String userMessage) {
+        public Objeto(String name, String userMessage) {
             this.name = name;
             this.userMessage = userMessage;
         }
