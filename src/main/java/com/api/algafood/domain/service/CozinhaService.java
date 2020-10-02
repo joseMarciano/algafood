@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class CozinhaService {
 
     private static final String MSG_COZINHA_EM_USO =
-            "Entity 'Cozinha' with identifier %d is in use";
+            "Entity 'Cozinha' with identifier %s is in use";
 
     private static final String MSG_COZINHA_NAO_ENCONTRADO =
             "Entity 'Cozinha' with identifier %d not found";
