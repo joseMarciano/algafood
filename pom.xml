@@ -16,6 +16,11 @@
 
     <properties>
         <java.version>14</java.version>
+
+<!--  Especificar a versão do groovy por conta da atualização do restAssured      -->
+        <rest-assured.version>4.3.1</rest-assured.version>
+        <groovy.version>3.0.2</groovy.version>
+
     </properties>
 
     <dependencies>
@@ -76,6 +81,31 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+<!--Dependencia de testes de API -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!--Added required depeendencies due to : https://github.com/rest-assured/rest-assured/issues/1168 -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured-common</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>xml-path</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <!--FIM Dependencia de testes de API -->
 
 
     </dependencies>
