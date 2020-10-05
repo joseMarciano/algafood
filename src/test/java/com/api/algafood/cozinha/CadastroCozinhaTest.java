@@ -2,6 +2,7 @@ package com.api.algafood.cozinha;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +22,7 @@ public class CadastroCozinhaTest {
     private int port;
 
     @Test
-    public void deveRetornarStatus200QuandoConsultarCozinhas(){
+    public void deveRetornarStatus200QuandoConsultarCozinhas() {
         //usando a biblioteca restAssured
 
         /*
@@ -37,10 +38,27 @@ public class CadastroCozinhaTest {
                 .basePath("/cozinhas")
                 .port(port)
                 .accept(ContentType.JSON)
-             .when()
+                .when()
                 .get()
-             .then()
+                .then()
                 .statusCode(HttpStatus.OK.value());
+
+    }
+
+    @Test
+    public void deveConter4CozinhasQuandoConsultarCozinhas() {
+
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+        RestAssured.given()
+                .basePath("/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get()
+                .then()
+                .body("", Matchers.hasSize(4)) // Verifica se o corpo tem 4 itens
+                .body("nome", Matchers.hasItems("TAILANDESA", "INDIANA")); //Verifica se a propriedade nome existe TAILANDESA E INDIANA
 
     }
 }
