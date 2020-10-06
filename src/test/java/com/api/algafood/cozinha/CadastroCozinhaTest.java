@@ -52,6 +52,18 @@ public class CadastroCozinhaTest {
                 .then()
                 .body("", Matchers.hasSize(4)) // Verifica se o corpo tem 4 itens
                 .body("nome", Matchers.hasItems("TAILANDESA", "INDIANA")); //Verifica se a propriedade nome existe TAILANDESA E INDIANA
+    }
 
+    @Test
+    public void deveRetornarStatus201QuandoCadastrarCozinha(){
+            RestAssured
+                    .given()
+                    .body("{ \"nome\": \"Chinesa\" }")
+                    .contentType(ContentType.JSON)
+                    .accept(ContentType.JSON)
+                    .when()
+                    .post()
+                    .then()
+                    .statusCode(HttpStatus.CREATED.value());
     }
 }
