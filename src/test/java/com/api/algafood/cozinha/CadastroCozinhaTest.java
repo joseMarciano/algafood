@@ -3,6 +3,7 @@ package com.api.algafood.cozinha;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,22 +22,16 @@ public class CadastroCozinhaTest {
     @LocalServerPort
     private int port;
 
+    @Before
+    public void setUp(){
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); // Colocando no setup o Log de validação
+        RestAssured.port = port; // Passando o port para não repetir código
+        RestAssured.basePath = "/cozinhas"; //Passando o basePath para não repetir código
+    }
+
     @Test
     public void deveRetornarStatus200QuandoConsultarCozinhas() {
-        //usando a biblioteca restAssured
-
-        /*
-         * Habilitando os logs da lib quando o test falha
-         */
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-
-        /* Para um path = "/cozinhas", na porta 8080, aceitando retorno JSON...
-         * Quando eu der um get.... espero o statusCode 200
-         */
-
         RestAssured.given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
                 .when()
                 .get()
@@ -51,8 +46,6 @@ public class CadastroCozinhaTest {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
         RestAssured.given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
                 .when()
                 .get()
