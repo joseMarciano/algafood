@@ -84,6 +84,38 @@ public class CadastroCozinhaTest {
                     .statusCode(HttpStatus.CREATED.value());
     }
 
+    @Test
+    public void deveRetornarRespostaEStatusCorretosQuandoConsultarCozinhaExistente(){
+        /*
+         * Dado um pathParam com nome cozinhaId = 2, aceitando JSON na resposta, quando der um get em cozinhaId
+         * então, espero um statusCode de OK(200) e no corpo um "nome" igual a "Brasileira"
+         */
+        RestAssured
+                .given()
+                .pathParam("cozinhaId",2) // parametro da requisição com o valor de 2
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("nome", Matchers.equalTo("Brasileira"));
+    }
+    @Test
+    public void deveRetornarRespostaEStatus404QuandoConsultarCozinhaExistente(){
+        /*
+         * Dado um pathParam com nome cozinhaId = 100, aceitando JSON na resposta, quando der um get em cozinhaId
+         * então, espero um statusCode de NOTfOUND(404)
+         */
+        RestAssured
+                .given()
+                .pathParam("cozinhaId",99999999) // parametro da requisição com o valor de 999999999
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
     private void prepararDados(){
        var c1 = new Cozinha();
        var c2 = new Cozinha();
