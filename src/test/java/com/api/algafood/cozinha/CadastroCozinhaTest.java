@@ -1,5 +1,8 @@
 package com.api.algafood.cozinha;
 
+import com.api.algafood.domain.model.Cozinha;
+import com.api.algafood.domain.repository.CozinhaRepository;
+import com.api.algafood.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.flywaydb.core.Flyway;
@@ -11,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource("/application-test.properties")
 public class CadastroCozinhaTest {
 
     /*
@@ -25,7 +30,11 @@ public class CadastroCozinhaTest {
     private int port;
 
     @Autowired
-    private Flyway flyway;
+    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private CozinhaRepository repository;
+
 
     @Before
     public void setUp(){
@@ -33,7 +42,8 @@ public class CadastroCozinhaTest {
         RestAssured.port = port; // Passando o port para não repetir código
         RestAssured.basePath = "/cozinhas"; //Passando o basePath para não repetir código
 
-        flyway.migrate();
+        databaseCleaner.clearTables();
+        prepararDados();
     }
 
     @Test
@@ -48,7 +58,7 @@ public class CadastroCozinhaTest {
     }
 
     @Test
-    public void deveConter4CozinhasQuandoConsultarCozinhas() {
+    public void deveConter2CozinhasQuandoConsultarCozinhas() {
 
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
@@ -57,8 +67,8 @@ public class CadastroCozinhaTest {
                 .when()
                 .get()
                 .then()
-                .body("", Matchers.hasSize(4)) // Verifica se o corpo tem 4 itens
-                .body("nome", Matchers.hasItems("TAILANDESA", "INDIANA")); //Verifica se a propriedade nome existe TAILANDESA E INDIANA
+                .body("", Matchers.hasSize(2)) // Verifica se o corpo tem 2 itens
+                .body("nome", Matchers.hasItems("Tailandesa", "Brasileira")); //Verifica se a propriedade nome existe TAILANDESA E INDIANA
     }
 
     @Test
@@ -72,5 +82,15 @@ public class CadastroCozinhaTest {
                     .post()
                     .then()
                     .statusCode(HttpStatus.CREATED.value());
+    }
+
+    private void prepararDados(){
+       var c1 = new Cozinha();
+       var c2 = new Cozinha();
+
+       c1.setNome("Tailandesa");
+       c2.setNome("Brasileira");
+       repository.save(c1);
+       repository.save(c2);
     }
 }
