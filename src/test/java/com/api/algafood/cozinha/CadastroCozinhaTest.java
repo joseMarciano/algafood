@@ -2,10 +2,12 @@ package com.api.algafood.cozinha;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -22,11 +24,16 @@ public class CadastroCozinhaTest {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private Flyway flyway;
+
     @Before
     public void setUp(){
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); // Colocando no setup o Log de validação
         RestAssured.port = port; // Passando o port para não repetir código
         RestAssured.basePath = "/cozinhas"; //Passando o basePath para não repetir código
+
+        flyway.migrate();
     }
 
     @Test
