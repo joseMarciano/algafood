@@ -1,0 +1,7 @@
+{
+  "nome": "Guellere",
+  "taxaFrete": 100.00,
+  "cozinha": {
+    "id": 1
+  }
+}

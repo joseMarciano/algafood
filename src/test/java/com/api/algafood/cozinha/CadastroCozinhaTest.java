@@ -47,7 +47,7 @@ public class CadastroCozinhaTest {
         RestAssured.port = port; // Passando o port para não repetir código
         RestAssured.basePath = "/cozinhas"; //Passando o basePath para não repetir código
 
-        this.jsonCorretoCozinhaChinesa = JsonReader.read("/json/Cozinha/cadastroCozinha.json");
+        this.jsonCorretoCozinhaChinesa = JsonReader.read("/json/Cozinha/cadastro-cozinha.json");
 
         databaseCleaner.clearTables();
         prepararDados();
