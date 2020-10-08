@@ -1,4 +1,4 @@
-package com.api.algafood.controller;
+package com.api.algafood.api.controller;
 
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Cidade;

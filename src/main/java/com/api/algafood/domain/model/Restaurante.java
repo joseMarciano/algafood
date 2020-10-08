@@ -2,8 +2,6 @@ package com.api.algafood.domain.model;
 
 import com.api.algafood.core.validation.Groups;
 import com.api.algafood.core.validation.ValorZeroIncluirDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -41,7 +39,6 @@ public class Restaurante {
      *valid ele entra na entidade e faz as validações que estão la dentro
      */
     @Valid
-    @JsonIgnoreProperties(value = "nome", allowGetters = true)  /* Sempre que eu adicionar uma cozinha, eu ignoro a propriedade "nome",aceitando apenas o Id*/
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull
     @ManyToOne
@@ -49,10 +46,8 @@ public class Restaurante {
     private Cozinha cozinha;
 
     @Embedded
-    @JsonIgnore
     private Endereco endereco;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "RESTAURANTES_FORMAS_PAGAMENTO",
             joinColumns = @JoinColumn(name = "ID_RESTAURANTES"),
@@ -65,13 +60,11 @@ public class Restaurante {
     private LocalDateTime dataCadastro;
 
     @Column(name = "DATA_ATUALIZACAO", nullable = false)
-    @JsonIgnore
     @UpdateTimestamp
 // informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "restaurante")
-    @JsonIgnore
     private List<Produto> produtos = new ArrayList<>();
 
     public Long getId() {

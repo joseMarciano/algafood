@@ -1,4 +1,4 @@
-package com.api.algafood.domain.Exception.ExceptionHandler;
+package com.api.algafood.api.ExceptionHandler;
 
 import com.api.algafood.domain.Exception.EntidadeEmUsoException;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;

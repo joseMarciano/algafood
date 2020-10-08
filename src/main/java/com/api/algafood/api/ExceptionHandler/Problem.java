@@ -1,4 +1,4 @@
-package com.api.algafood.domain.Exception.ExceptionHandler;
+package com.api.algafood.api.ExceptionHandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

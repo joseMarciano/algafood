@@ -1,4 +1,4 @@
-package com.api.algafood.domain.Exception.ExceptionHandler;
+package com.api.algafood.api.ExceptionHandler;
 
 public enum ProblemType {
     SYSTEM_ERROR("erro-interno", "Erro interno no servidor de aplicação"),
