@@ -7,6 +7,7 @@ import com.api.algafood.domain.repository.CozinhaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CozinhaService {
@@ -23,10 +24,12 @@ public class CozinhaService {
         this.repository = repository;
     }
 
+    @Transactional
     public Cozinha save(Cozinha cozinha) {
         return repository.save(cozinha);
     }
 
+    @Transactional
     public void remove(Long id) {
         try {
             repository.deleteById(id);

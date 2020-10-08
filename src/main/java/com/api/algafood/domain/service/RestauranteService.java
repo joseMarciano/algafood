@@ -5,6 +5,7 @@ import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RestauranteService {
@@ -24,6 +25,7 @@ public class RestauranteService {
         this.cozinhaService = cozinhaService;
     }
 
+    @Transactional
     public Restaurante save(Restaurante restaurante) {
         cozinhaService.findById(restaurante.getCozinha().getId());
         return repository.save(restaurante);

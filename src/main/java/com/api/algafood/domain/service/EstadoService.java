@@ -7,6 +7,7 @@ import com.api.algafood.domain.repository.EstadoRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EstadoService {
@@ -23,10 +24,12 @@ public class EstadoService {
         this.repository = repository;
     }
 
+    @Transactional
     public Estado save(Estado estado) {
         return repository.save(estado);
     }
 
+    @Transactional
     public void remove(Long id) {
         try {
             repository.deleteById(id);
