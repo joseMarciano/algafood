@@ -1,8 +1,9 @@
 package com.api.algafood.domain.model;
 
-import com.api.algafood.core.validation.ValorZeroIncluirDescricao;
 import com.api.algafood.core.validation.Groups;
+import com.api.algafood.core.validation.ValorZeroIncluirDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@ValorZeroIncluirDescricao(valorField = "taxaFrete",descricaoField = "nome",descricaoObrigatoria = "Frete Grátis")
+@ValorZeroIncluirDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Entity
 @Table(name = "RESTAURANTES")
 public class Restaurante {
@@ -36,8 +37,11 @@ public class Restaurante {
     @NotNull
     private BigDecimal taxaFrete;
 
+    /*Fazendo validação em cascata ---> Só colocando
+     *valid ele entra na entidade e faz as validações que estão la dentro
+     */
     @Valid
-//Fazendo validação em cascata ---> Só colocando valid ele entra na entidade e faz as validações que estão la dentro
+    @JsonIgnoreProperties(value = "nome", allowGetters = true)  /* Sempre que eu adicionar uma cozinha, eu ignoro a propriedade "nome",aceitando apenas o Id*/
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull
     @ManyToOne
