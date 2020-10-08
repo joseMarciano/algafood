@@ -1,6 +1,7 @@
 package com.api.algafood.domain.model;
 
 import com.api.algafood.core.validation.Groups;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ public class Cidade {
     @JoinColumn(name = "ID_ESTADOS")
     @Valid
     @NotNull
+    @JsonIgnoreProperties(value = "nome",allowGetters = true)
     @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     private Estado estado;
 
