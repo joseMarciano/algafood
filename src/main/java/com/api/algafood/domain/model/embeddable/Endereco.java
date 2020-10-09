@@ -1,4 +1,6 @@
-package com.api.algafood.domain.model;
+package com.api.algafood.domain.model.embeddable;
+
+import com.api.algafood.domain.model.Cidade;
 
 import javax.persistence.*;
 

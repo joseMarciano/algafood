@@ -2,8 +2,8 @@ package com.api.algafood.domain.model;
 
 import com.api.algafood.core.validation.Groups;
 import com.api.algafood.core.validation.ValorZeroIncluirDescricao;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.api.algafood.domain.model.embeddable.DataHoraCadastroAtualizacao;
+import com.api.algafood.domain.model.embeddable.Endereco;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -13,7 +13,6 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +44,6 @@ public class Restaurante {
     @JoinColumn(name = "ID_COZINHAS")
     private Cozinha cozinha;
 
-    @Embedded
-    private Endereco endereco;
 
     @ManyToMany
     @JoinTable(name = "RESTAURANTES_FORMAS_PAGAMENTO",
@@ -54,18 +51,15 @@ public class Restaurante {
             inverseJoinColumns = @JoinColumn(name = "ID_FORMAS_PAGAMENTO"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    @Column(name = "DATA_CADASTRO", nullable = false)
-    @CreationTimestamp
-//informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que entidade foi salva pela primeira vez
-    private LocalDateTime dataCadastro;
-
-    @Column(name = "DATA_ATUALIZACAO", nullable = false)
-    @UpdateTimestamp
-// informa que a propriedade anotada deve ser atribuida com data/hora atual no momento que a entidade foi atualizada(update)
-    private LocalDateTime dataAtualizacao;
-
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
+
+    @Embedded
+    private Endereco endereco;
+
+    @Embedded
+    private DataHoraCadastroAtualizacao dataHoraCadastroAtualizacao;
+
 
     public Long getId() {
         return id;
@@ -115,20 +109,12 @@ public class Restaurante {
         this.endereco = endereco;
     }
 
-    public LocalDateTime getDataCadastro() {
-        return dataCadastro;
+    public DataHoraCadastroAtualizacao getDataHoraCadastroAtualizacao() {
+        return dataHoraCadastroAtualizacao;
     }
 
-    public void setDataCadastro(LocalDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    public void setDataHoraCadastroAtualizacao(DataHoraCadastroAtualizacao dataHoraCadastroAtualizacao) {
+        this.dataHoraCadastroAtualizacao = dataHoraCadastroAtualizacao;
     }
 
     public List<Produto> getProdutos() {

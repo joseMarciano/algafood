@@ -1,5 +1,6 @@
 package com.api.algafood.domain.model;
 
+import com.api.algafood.domain.model.embeddable.Endereco;
 import com.api.algafood.domain.model.enums.StatusPedido;
 import org.hibernate.annotations.CreationTimestamp;
 
