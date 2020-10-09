@@ -27,7 +27,6 @@ public class Cidade {
     @JoinColumn(name = "ID_ESTADOS")
     @Valid
     @NotNull
-    @JsonIgnoreProperties(value = "nome",allowGetters = true)
     @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     private Estado estado;
 
