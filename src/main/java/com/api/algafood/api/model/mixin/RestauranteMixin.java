@@ -27,7 +27,7 @@ public abstract class RestauranteMixin {
     @JsonIgnore
     private List<Produto> produtos;
 
-    //@JsonIgnore
+    @JsonIgnore
     private DataHoraCadastroAtualizacao dataHoraCadastroAtualizacao;
 
 

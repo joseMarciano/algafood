@@ -27,6 +27,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.NOT_FOUND;
         var problem = problemBuilder(status, ProblemType.RECURSO_NAO_ENCONTRADO, e.getMessage());
         problem.setUserMessage("A entidade não foi encontrada");
-        problem.setTimeStamp(LocalDateTime.now());
+        problem.setTimeStamp(OffsetDateTime.now());
 
         return handleExceptionInternal(
                 e,
@@ -71,7 +72,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         var problem = problemBuilder(status, ProblemType.ERRO_NEGOCIO, e.getMessage());
         problem.setUserMessage("Erro de negócio");
-        problem.setTimeStamp(LocalDateTime.now());
+        problem.setTimeStamp(OffsetDateTime.now());
 
         return handleExceptionInternal(
                 e,
@@ -95,7 +96,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.CONFLICT;
         var problem = problemBuilder(status, ProblemType.ENTIDADE_EM_USO, e.getMessage());
         problem.setUserMessage(e.getMessage());
-        problem.setTimeStamp(LocalDateTime.now());
+        problem.setTimeStamp(OffsetDateTime.now());
 
         return handleExceptionInternal(e,
                 problem,
@@ -121,14 +122,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             problem.setTittle(status.getReasonPhrase());
             problem.setStatus(status.value());
             problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
-            problem.setTimeStamp(LocalDateTime.now());
+            problem.setTimeStamp(OffsetDateTime.now());
             body = problem;
         } else if (body instanceof String) {
             var problem = new Problem();
             problem.setTittle((String) body);
             problem.setStatus(status.value());
             problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
-            problem.setTimeStamp(LocalDateTime.now());
+            problem.setTimeStamp(OffsetDateTime.now());
             body = problem;
         }
         return super.handleExceptionInternal(ex, body, headers, status, request);
@@ -155,7 +156,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 "Corrija e informe um valor compatível com o tipo '%s'", e.getName(), e.getValue(), e.getRequiredType().getSimpleName());
         var problem = problemBuilder(status, problemType, detail);
         problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
-        problem.setTimeStamp(LocalDateTime.now());
+        problem.setTimeStamp(OffsetDateTime.now());
         return handleExceptionInternal(e,
                 problem,
                 httpHeaders,
@@ -172,7 +173,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var problem = problemBuilder(status, problemType, detail);
         problem.setUserMessage("Você tentou acessar um recurso inexistente.Por favor acesse um recurso correto");
-        problem.setTimeStamp(LocalDateTime.now());
+        problem.setTimeStamp(OffsetDateTime.now());
 
         return handleExceptionInternal(e,
                 problem,
@@ -268,7 +269,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 
         var problem = problemBuilder(status, ProblemType.INVALID_DATAS, MSG_CAMPOS_INVALIDOS);
-        problem.setTimeStamp(LocalDateTime.now());
+        problem.setTimeStamp(OffsetDateTime.now());
         problem.setUserMessage(MSG_CAMPOS_INVALIDOS);
         problem.setObjetos(problemObjetos);
 
@@ -325,7 +326,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var problem = problemBuilder(status, problemType, detail);
         problem.setUserMessage(MSG_ERRO_GENERICA_USUARIO_FINAL);
-        problem.setTimeStamp(LocalDateTime.now());
+        problem.setTimeStamp(OffsetDateTime.now());
 
         return handleExceptionInternal(e,
                 problem,

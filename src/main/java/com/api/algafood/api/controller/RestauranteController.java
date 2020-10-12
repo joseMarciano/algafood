@@ -5,6 +5,7 @@ import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.api.algafood.domain.service.RestauranteService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,12 @@ public class RestauranteController {
         }
     }
 
+    @PutMapping("/{id}")
+    public Restaurante update(@PathVariable Long id,
+                              @RequestBody Restaurante restaurante) {
+        var entity = service.findById(id);
+        BeanUtils.copyProperties(restaurante,entity,"id","dataHoraCadastroAtualizacao","endereco");
+        return service.save(entity);
+    }
 
 }

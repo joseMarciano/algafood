@@ -3,6 +3,7 @@ package com.api.algafood.api.ExceptionHandler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /*               RFC 7807
@@ -23,7 +24,7 @@ public class Problem {
 
     //Outros parametros opcionais... a parte da especificação
     private String userMessage;
-    private LocalDateTime timeStamp;
+    private OffsetDateTime timeStamp;
     private List<Objeto> objetos;
 
     public Problem(Integer status,
@@ -95,12 +96,12 @@ public class Problem {
         this.userMessage = userMessage;
     }
 
-    public void setTimeStamp(LocalDateTime timeStamp) {
-        this.timeStamp = timeStamp;
+    public OffsetDateTime getTimeStamp() {
+        return timeStamp;
     }
 
-    public LocalDateTime getTimeStamp() {
-        return timeStamp;
+    public void setTimeStamp(OffsetDateTime timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public List<Objeto> getObjetos() {
