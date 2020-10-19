@@ -43,8 +43,9 @@ create table restaurantes (
 	id_cozinhas bigint not null,
 	nome varchar(60) not null,
 	taxa_frete decimal(10,2) not null,
-	data_atualizacao datetime not null,
-	data_cadastro datetime not null,
+
+	data_atualizacao datetime,
+	data_cadastro datetime,
 
 	id_endereco_cidade bigint,
 	endereco_cep varchar(9),

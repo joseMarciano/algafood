@@ -1,5 +1,7 @@
 package com.api.algafood.api.controller;
 
+import com.api.algafood.api.model.CozinhaDTO;
+import com.api.algafood.api.model.RestauranteDTO;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Restaurante;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -25,31 +28,52 @@ public class RestauranteController {
     }
 
     @GetMapping
-    public List<Restaurante> findAll() {
-        return repository.findAll();
+    public List<RestauranteDTO> findAll() {
+        return toCollectionDTO(repository.findAll());
     }
 
     @GetMapping("/{id}")
-    public Restaurante find(@PathVariable Long id) {
-        return service.findById(id);
+    public RestauranteDTO find(@PathVariable Long id) {
+        Restaurante restaurante = service.findById(id);
+        return toDTO(restaurante);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante save(@RequestBody @Valid Restaurante restaurante) {
+    public RestauranteDTO save(@RequestBody @Valid Restaurante restaurante) {
         try {
-            return service.save(restaurante);
+            return toDTO(service.save(restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public Restaurante update(@PathVariable Long id,
+    public RestauranteDTO update(@PathVariable Long id,
                               @RequestBody Restaurante restaurante) {
         var entity = service.findById(id);
         BeanUtils.copyProperties(restaurante,entity,"id","dataHoraCadastroAtualizacao","endereco");
-        return service.save(entity);
+        return toDTO(service.save(entity));
+    }
+
+
+    private RestauranteDTO toDTO(Restaurante restaurante) {
+        var cozinhaDTO = new CozinhaDTO();
+        cozinhaDTO.setId(restaurante.getCozinha().getId());
+        cozinhaDTO.setNome(restaurante.getCozinha().getNome());
+
+        var restauranteDTO = new RestauranteDTO();
+        restauranteDTO.setId(restaurante.getId());
+        restauranteDTO.setNome(restaurante.getNome());
+        restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
+        restauranteDTO.setCozinha(cozinhaDTO);
+        return restauranteDTO;
+    }
+
+    private List<RestauranteDTO> toCollectionDTO (List<Restaurante> restaurantes){
+        return restaurantes.stream().map(restaurante -> {
+            return toDTO(restaurante);
+        }).collect(Collectors.toList());
     }
 
 }
