@@ -58,7 +58,7 @@ public class Restaurante {
     private Endereco endereco;
 
     @Embedded
-    private DataHoraCadastroAtualizacao dataHoraCadastroAtualizacao;
+    private DataHoraCadastroAtualizacao dataHoraCadastroAtualizacao = new DataHoraCadastroAtualizacao();
 
 
     public Long getId() {
@@ -124,7 +124,6 @@ public class Restaurante {
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
     }
-
 
     @Override
     public boolean equals(Object o) {
