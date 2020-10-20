@@ -1,7 +1,6 @@
 package com.api.algafood.domain.model;
 
 import com.api.algafood.core.validation.Groups;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.Valid;

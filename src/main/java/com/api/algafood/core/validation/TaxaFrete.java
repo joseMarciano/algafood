@@ -8,15 +8,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /*
  * Criando uma anotação clone de @PositiveOrZero
  */
-@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = { })
+@Constraint(validatedBy = {})
 @PositiveOrZero
 public @interface TaxaFrete {
 
@@ -26,11 +25,11 @@ public @interface TaxaFrete {
      * Se não fizermos isso, a mensagem default continuará sendo {javax.validation.constraints.PositiveOrZero.message}
      * ao invés de "{TaxaFrete.invalida}"
      */
-    @OverridesAttribute(constraint = PositiveOrZero.class,name = "message")
+    @OverridesAttribute(constraint = PositiveOrZero.class, name = "message")
     String message() default "{TaxaFrete.invalida}";
 
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default {};
 
 }

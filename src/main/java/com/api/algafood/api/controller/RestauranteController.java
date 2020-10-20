@@ -1,8 +1,8 @@
 package com.api.algafood.api.controller;
 
 import com.api.algafood.api.assembler.RestauranteAssemblers;
-import com.api.algafood.api.model.representation.restaurante.RestauranteCompletaListagem;
 import com.api.algafood.api.model.representation.restaurante.RestauranteCompleta;
+import com.api.algafood.api.model.representation.restaurante.RestauranteCompletaListagem;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Restaurante;
@@ -58,10 +58,9 @@ public class RestauranteController {
 
         var restaurante = assemblers.toDomainObject(restauranteCompleta);
         var entity = service.findById(id);
-        BeanUtils.copyProperties(restaurante,entity,"id","dataHoraCadastroAtualizacao","endereco");
+        BeanUtils.copyProperties(restaurante, entity, "id", "dataHoraCadastroAtualizacao", "endereco");
         return assemblers.toDTO(service.save(entity));
     }
-
 
 
 }

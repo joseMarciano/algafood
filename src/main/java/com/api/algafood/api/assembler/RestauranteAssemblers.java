@@ -1,9 +1,7 @@
 package com.api.algafood.api.assembler;
 
-import com.api.algafood.api.model.CozinhaDTO;
 import com.api.algafood.api.model.representation.restaurante.RestauranteCompleta;
 import com.api.algafood.api.model.representation.restaurante.RestauranteCompletaListagem;
-import com.api.algafood.domain.model.Cozinha;
 import com.api.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

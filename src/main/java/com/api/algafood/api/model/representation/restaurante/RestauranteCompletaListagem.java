@@ -1,6 +1,6 @@
 package com.api.algafood.api.model.representation.restaurante;
 
-import com.api.algafood.api.model.CozinhaDTO;
+import com.api.algafood.api.model.representation.cozinha.CozinhaCompletaListagem;
 
 import java.math.BigDecimal;
 
@@ -8,7 +8,7 @@ public class RestauranteCompletaListagem {
     private Long id;
     private String nome;
     private BigDecimal taxaFrete;
-    private CozinhaDTO cozinha;
+    private CozinhaCompletaListagem cozinha;
 
     public Long getId() {
         return id;
@@ -34,11 +34,11 @@ public class RestauranteCompletaListagem {
         this.taxaFrete = taxaFrete;
     }
 
-    public CozinhaDTO getCozinha() {
+    public CozinhaCompletaListagem getCozinha() {
         return cozinha;
     }
 
-    public void setCozinha(CozinhaDTO cozinha) {
+    public void setCozinha(CozinhaCompletaListagem cozinha) {
         this.cozinha = cozinha;
     }
 }

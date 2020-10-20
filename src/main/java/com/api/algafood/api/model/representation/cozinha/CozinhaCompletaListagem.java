@@ -1,6 +1,6 @@
-package com.api.algafood.api.model;
+package com.api.algafood.api.model.representation.cozinha;
 
-public class CozinhaDTO {
+public class CozinhaCompletaListagem {
     private Long id;
     private String nome;
 

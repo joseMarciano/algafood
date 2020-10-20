@@ -1,8 +1,5 @@
 package com.api.algafood.domain.model.embeddable;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.PrePersist;
@@ -19,12 +16,13 @@ public class DataHoraCadastroAtualizacao {
     private OffsetDateTime dataCadastro;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.dataCadastro = OffsetDateTime.now();
         this.dataAtualizacao = OffsetDateTime.now();
     }
+
     @PreUpdate
-    public void preUpdate(){
+    public void preUpdate() {
         this.dataAtualizacao = OffsetDateTime.now();
     }
 

@@ -26,7 +26,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -257,15 +256,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     var name = objectError.getObjectName();
 
                     //Um objectError pode ser um fieldError.. mas não necessariamente ele é...
-                    if(objectError instanceof FieldError){
+                    if (objectError instanceof FieldError) {
                         name = ((FieldError) objectError).getField(); //sobrescreve a variavel nome com o valor do getField
                     }
 
 
-
-                   return new Problem.Objeto(name,message);
+                    return new Problem.Objeto(name, message);
                 }).collect(Collectors.toList());
-
 
 
         var problem = problemBuilder(status, ProblemType.INVALID_DATAS, MSG_CAMPOS_INVALIDOS);

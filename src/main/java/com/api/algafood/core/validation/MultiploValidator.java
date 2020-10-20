@@ -1,8 +1,6 @@
 package com.api.algafood.core.validation;
 
 
-import com.api.algafood.core.validation.Multiplo;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
@@ -14,7 +12,7 @@ import java.math.BigDecimal;
  * No meu caso coloquei um Number pois vamos validar o multiplo....
  * Em outros casos poderia ser String, ou qualquer outro tipo de objeto que vc queira validar
  */
-public class MultiploValidator implements ConstraintValidator<Multiplo,Number> {
+public class MultiploValidator implements ConstraintValidator<Multiplo, Number> {
 
     private int numeroMultiplo;
 
@@ -33,7 +31,7 @@ public class MultiploValidator implements ConstraintValidator<Multiplo,Number> {
     public boolean isValid(Number value, ConstraintValidatorContext context) {
         Boolean valido = true;
 
-        if(value != null){
+        if (value != null) {
             var valorDecimal = BigDecimal.valueOf(value.doubleValue());
             var multiploDecimal = BigDecimal.valueOf(this.numeroMultiplo);
             var resto = valorDecimal.remainder(multiploDecimal); //retorna o resto
