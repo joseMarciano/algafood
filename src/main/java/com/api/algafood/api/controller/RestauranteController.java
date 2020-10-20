@@ -1,11 +1,11 @@
 package com.api.algafood.api.controller;
 
 import com.api.algafood.api.assembler.RestauranteModelAssembler;
+import com.api.algafood.api.assembler.RestauranteModelDisassembler;
 import com.api.algafood.api.model.RestauranteDTO;
 import com.api.algafood.api.model.representation.restaurante.RestauranteCompleta;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
-import com.api.algafood.domain.model.Cozinha;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.api.algafood.domain.service.RestauranteService;
@@ -23,13 +23,16 @@ public class RestauranteController {
     private RestauranteRepository repository;
     private RestauranteService service;
     private RestauranteModelAssembler assembler;
+    private RestauranteModelDisassembler disassembler;
 
     public RestauranteController(RestauranteRepository repository,
                                  RestauranteService service,
-                                 RestauranteModelAssembler assembler) {
+                                 RestauranteModelAssembler assembler,
+                                 RestauranteModelDisassembler disassembler) {
         this.repository = repository;
         this.service = service;
         this.assembler = assembler;
+        this.disassembler = disassembler;
     }
 
     @GetMapping
@@ -47,7 +50,7 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteDTO save(@RequestBody @Valid RestauranteCompleta restauranteCompleta) {
         try {
-            var restaurante = toDomainObject(restauranteCompleta);
+            var restaurante = disassembler.toDomainObject(restauranteCompleta);
             return assembler.toDTO(service.save(restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
@@ -58,20 +61,12 @@ public class RestauranteController {
     public RestauranteDTO update(@PathVariable Long id,
                               @RequestBody RestauranteCompleta restauranteCompleta) {
 
-        var restaurante = toDomainObject(restauranteCompleta);
+        var restaurante = disassembler.toDomainObject(restauranteCompleta);
         var entity = service.findById(id);
         BeanUtils.copyProperties(restaurante,entity,"id","dataHoraCadastroAtualizacao","endereco");
         return assembler.toDTO(service.save(entity));
     }
 
-    private Restaurante toDomainObject(RestauranteCompleta restauranteCompleta){
-       var restaurante = new Restaurante();
-        restaurante.setNome(restauranteCompleta.getNome());
-        restaurante.setTaxaFrete(restauranteCompleta.getTaxaFrete());
-        var cozinha = new Cozinha();
-        cozinha.setId(restauranteCompleta.getCozinha().getId());
-        restaurante.setCozinha(cozinha);
-        return restaurante;
-    }
+
 
 }
