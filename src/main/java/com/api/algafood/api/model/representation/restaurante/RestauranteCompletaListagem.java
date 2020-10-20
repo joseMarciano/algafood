@@ -1,8 +1,10 @@
-package com.api.algafood.api.model;
+package com.api.algafood.api.model.representation.restaurante;
+
+import com.api.algafood.api.model.CozinhaDTO;
 
 import java.math.BigDecimal;
 
-public class RestauranteDTO {
+public class RestauranteCompletaListagem {
     private Long id;
     private String nome;
     private BigDecimal taxaFrete;

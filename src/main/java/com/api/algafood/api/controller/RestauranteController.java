@@ -1,8 +1,7 @@
 package com.api.algafood.api.controller;
 
-import com.api.algafood.api.assembler.RestauranteModelAssembler;
-import com.api.algafood.api.assembler.RestauranteModelDisassembler;
-import com.api.algafood.api.model.RestauranteDTO;
+import com.api.algafood.api.assembler.RestauranteAssemblers;
+import com.api.algafood.api.model.representation.restaurante.RestauranteCompletaListagem;
 import com.api.algafood.api.model.representation.restaurante.RestauranteCompleta;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
@@ -22,49 +21,45 @@ public class RestauranteController {
 
     private RestauranteRepository repository;
     private RestauranteService service;
-    private RestauranteModelAssembler assembler;
-    private RestauranteModelDisassembler disassembler;
+    private RestauranteAssemblers assemblers;
 
     public RestauranteController(RestauranteRepository repository,
-                                 RestauranteService service,
-                                 RestauranteModelAssembler assembler,
-                                 RestauranteModelDisassembler disassembler) {
+                                 RestauranteService service, RestauranteAssemblers assemblers) {
         this.repository = repository;
         this.service = service;
-        this.assembler = assembler;
-        this.disassembler = disassembler;
+        this.assemblers = assemblers;
     }
 
     @GetMapping
-    public List<RestauranteDTO> findAll() {
-        return assembler.toCollectionDTO(repository.findAll());
+    public List<RestauranteCompletaListagem> findAll() {
+        return assemblers.toCollectionDTO(repository.findAll());
     }
 
     @GetMapping("/{id}")
-    public RestauranteDTO find(@PathVariable Long id) {
+    public RestauranteCompletaListagem find(@PathVariable Long id) {
         Restaurante restaurante = service.findById(id);
-        return assembler.toDTO(restaurante);
+        return assemblers.toDTO(restaurante);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteDTO save(@RequestBody @Valid RestauranteCompleta restauranteCompleta) {
+    public RestauranteCompletaListagem save(@RequestBody @Valid RestauranteCompleta restauranteCompleta) {
         try {
-            var restaurante = disassembler.toDomainObject(restauranteCompleta);
-            return assembler.toDTO(service.save(restaurante));
+            var restaurante = assemblers.toDomainObject(restauranteCompleta);
+            return assemblers.toDTO(service.save(restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public RestauranteDTO update(@PathVariable Long id,
-                              @RequestBody RestauranteCompleta restauranteCompleta) {
+    public RestauranteCompletaListagem update(@PathVariable Long id,
+                                              @RequestBody RestauranteCompleta restauranteCompleta) {
 
-        var restaurante = disassembler.toDomainObject(restauranteCompleta);
+        var restaurante = assemblers.toDomainObject(restauranteCompleta);
         var entity = service.findById(id);
         BeanUtils.copyProperties(restaurante,entity,"id","dataHoraCadastroAtualizacao","endereco");
-        return assembler.toDTO(service.save(entity));
+        return assemblers.toDTO(service.save(entity));
     }
 
 
