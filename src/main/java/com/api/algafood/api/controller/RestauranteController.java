@@ -2,12 +2,15 @@ package com.api.algafood.api.controller;
 
 import com.api.algafood.api.model.CozinhaDTO;
 import com.api.algafood.api.model.RestauranteDTO;
+import com.api.algafood.api.model.representation.restaurante.RestauranteCompleta;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
+import com.api.algafood.domain.model.Cozinha;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.api.algafood.domain.service.RestauranteService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +43,9 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteDTO save(@RequestBody @Valid Restaurante restaurante) {
+    public RestauranteDTO save(@RequestBody @Valid RestauranteCompleta restauranteCompleta) {
         try {
+            var restaurante = toDomainObject(restauranteCompleta);
             return toDTO(service.save(restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
@@ -50,7 +54,9 @@ public class RestauranteController {
 
     @PutMapping("/{id}")
     public RestauranteDTO update(@PathVariable Long id,
-                              @RequestBody Restaurante restaurante) {
+                              @RequestBody RestauranteCompleta restauranteCompleta) {
+
+        var restaurante = toDomainObject(restauranteCompleta);
         var entity = service.findById(id);
         BeanUtils.copyProperties(restaurante,entity,"id","dataHoraCadastroAtualizacao","endereco");
         return toDTO(service.save(entity));
@@ -74,6 +80,16 @@ public class RestauranteController {
         return restaurantes.stream().map(restaurante -> {
             return toDTO(restaurante);
         }).collect(Collectors.toList());
+    }
+
+    private Restaurante toDomainObject(RestauranteCompleta restauranteCompleta){
+       var restaurante = new Restaurante();
+        restaurante.setNome(restauranteCompleta.getNome());
+        restaurante.setTaxaFrete(restauranteCompleta.getTaxaFrete());
+        var cozinha = new Cozinha();
+        cozinha.setId(restauranteCompleta.getCozinha().getId());
+        restaurante.setCozinha(cozinha);
+        return restaurante;
     }
 
 }
