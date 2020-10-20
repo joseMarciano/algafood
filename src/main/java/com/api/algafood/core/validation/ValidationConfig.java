@@ -24,12 +24,11 @@ public class ValidationConfig {
 
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource);
-        System.out.println("********************************************");
+
         System.out.println("********************************************");
         System.out.println("*****VALIDATOR FACTORY BEAN FOI CHAMADO*****");
         System.out.println("********************************************");
-        System.out.println("********************************************");
-        System.out.println("********************************************");
+
         return bean;
     }
 }
