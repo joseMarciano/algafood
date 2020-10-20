@@ -109,8 +109,7 @@ public class CadastroRestauranteTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("nome",equalTo("Guellere"),
                         "taxaFrete", notNullValue(),
-                        "cozinha", notNullValue(),
-                        "dataCadastro", notNullValue());
+                        "cozinha", notNullValue());
 
 
     }
