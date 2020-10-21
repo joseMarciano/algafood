@@ -2,11 +2,13 @@ package com.api.algafood.api.assembler;
 
 import java.util.List;
 
-public interface Converter<T, S, U> {
+public interface Converter<ENTITY, OUTPUT, INPUT> {
 
-    public T toDomainObject(U inputDTO);
+    public ENTITY toDomainObject(INPUT inputDTO);
 
-    public S toDTO(T domain);
+    public OUTPUT toDTO(ENTITY domain);
 
-    public List<S> toCollectionDTO(List<T> list);
+    public List<OUTPUT> toCollectionDTO(List<ENTITY> list);
+
+    public void copyToDomainObject(INPUT inputDTO, ENTITY domain);
 }

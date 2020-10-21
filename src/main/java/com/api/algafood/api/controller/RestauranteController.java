@@ -8,7 +8,6 @@ import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.api.algafood.domain.service.RestauranteService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,10 +55,9 @@ public class RestauranteController {
     public RestauranteCompletaListagem update(@PathVariable Long id,
                                               @RequestBody RestauranteCompleta restauranteCompleta) {
 
-        var restaurante = assemblers.toDomainObject(restauranteCompleta);
-        var entity = service.findById(id);
-        BeanUtils.copyProperties(restaurante, entity, "id", "dataHoraCadastroAtualizacao", "endereco");
-        return assemblers.toDTO(service.save(entity));
+        var restaurante = service.findById(id);
+        assemblers.copyToDomainObject(restauranteCompleta,restaurante);
+        return assemblers.toDTO(service.save(restaurante));
     }
 
 

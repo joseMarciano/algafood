@@ -24,15 +24,12 @@ public class RestauranteAssemblers implements Converter<Restaurante, Restaurante
 
     @Override
     public Restaurante toDomainObject(RestauranteCompleta restauranteCompleta) {
-        /*Ajuste feito pois na hora de reotrnar o objeto, o nome da cozinha retornava null
-        * Isso deve ser provisório
-        */
-        Cozinha cozinha = cozinhaRepository.findById(restauranteCompleta.getCozinha().getId()).get();
         Restaurante restaurante = modelMapper.map(restauranteCompleta, Restaurante.class);
-        restaurante.setCozinha(cozinha);
+        restaurante.setCozinha(getCozinha(restauranteCompleta));
 
         return restaurante;
     }
+
 
     @Override
     public RestauranteCompletaListagem toDTO(Restaurante restaurante) {
@@ -45,5 +42,23 @@ public class RestauranteAssemblers implements Converter<Restaurante, Restaurante
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void copyToDomainObject(RestauranteCompleta restauranteCompleta, Restaurante restaurante) {
+        /* Para evitar Caused by: org.hibernate.HibernateException: identifier of an instance of
+         * com.api.algafood.domain.model.Cozinha was altered from 1 to 2
+         * Poderia ser resolvido assim: restaurante.setCozinha(new Cozinha()), mas como estou com problemas com o
+         * retorno do nome da cozinha = null no json, encontrei essa maneira de contornar o problema
+         */
+        restaurante.setCozinha(getCozinha(restauranteCompleta));
 
+        modelMapper.map(restauranteCompleta, restaurante);
+    }
+
+
+    private Cozinha getCozinha(RestauranteCompleta restauranteCompleta) {
+        /*Ajuste feito pois na hora de retornar o objeto, o nome da cozinha retornava null
+         * Isso deve ser provisório
+         */
+        return cozinhaRepository.findById(restauranteCompleta.getCozinha().getId()).get();
+    }
 }
