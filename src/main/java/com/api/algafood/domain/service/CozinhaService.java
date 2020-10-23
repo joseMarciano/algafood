@@ -33,11 +33,12 @@ public class CozinhaService {
     public void remove(Long id) {
         try {
             repository.deleteById(id);
+            repository.flush();
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADO, id));
         } catch (DataIntegrityViolationException e) { // se tem conflito de constrait(FK em outra table)
             throw new EntidadeEmUsoException(
-                    String.format(MSG_COZINHA_EM_USO, repository.findById(id).get().getNome(), id));  //lança a exception que criei
+                    String.format(MSG_COZINHA_EM_USO,id));  //lança a exception que criei
         }
     }
 

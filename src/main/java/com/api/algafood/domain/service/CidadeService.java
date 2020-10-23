@@ -40,6 +40,7 @@ public class CidadeService {
     public void remove(Long id) {
         try {
             repository.deleteById(id);
+            repository.flush();
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format(MSG_CIDADE_NAO_ENCONTRADA, id));
