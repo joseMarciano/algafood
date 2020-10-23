@@ -4,11 +4,10 @@ import java.util.List;
 
 public interface Converter<ENTITY, OUTPUT, INPUT> {
 
-    public ENTITY toDomainObject(INPUT inputDTO);
+    ENTITY toDomainObject(INPUT inputDTO, Class<ENTITY> type);
 
-    public OUTPUT toDTO(ENTITY domain);
+    OUTPUT toDTO(ENTITY domain, Class<OUTPUT> type);
 
-    public List<OUTPUT> toCollectionDTO(List<ENTITY> list);
+    List<OUTPUT> toCollectionDTO(List<ENTITY> list, Class<OUTPUT> type);
 
-    public void copyToDomainObject(INPUT inputDTO, ENTITY domain);
 }
