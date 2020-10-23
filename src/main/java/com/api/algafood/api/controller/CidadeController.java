@@ -1,5 +1,8 @@
 package com.api.algafood.api.controller;
 
+import com.api.algafood.api.assembler.Converter;
+import com.api.algafood.api.model.representation.cidade.CidadeCompleta;
+import com.api.algafood.api.model.representation.cidade.CidadeListagemCompleta;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.Cidade;
 import com.api.algafood.domain.repository.CidadeRepository;
@@ -16,31 +19,34 @@ public class CidadeController {
 
     private CidadeRepository repository;
     private CidadeService service;
+    private Converter<Cidade,CidadeListagemCompleta, CidadeCompleta> assemblers;
 
 
     public CidadeController(CidadeRepository repository,
-                            CidadeService service
-    ) {
+                            CidadeService service,
+                            Converter<Cidade, CidadeListagemCompleta, CidadeCompleta> assemblers) {
         this.repository = repository;
         this.service = service;
 
+        this.assemblers = assemblers;
     }
 
     @GetMapping
-    public List<Cidade> findAll() {
-        return repository.findAll();
+    public List<CidadeListagemCompleta> findAll() {
+        return assemblers.toCollectionDTO(repository.findAll(),CidadeListagemCompleta.class);
     }
 
     @GetMapping("/{id}")
-    public Cidade find(@PathVariable Long id) {
-        return service.findById(id);
+    public CidadeListagemCompleta find(@PathVariable Long id) {
+        return assemblers.toDTO(service.findById(id),CidadeListagemCompleta.class);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cidade save(@RequestBody @Valid Cidade cidade) {
+    public CidadeListagemCompleta save(@RequestBody @Valid CidadeCompleta cidadeCompleta) {
         try {
-            return service.save(cidade);
+            var cidade = assemblers.toDomainObject(cidadeCompleta,Cidade.class);
+            return assemblers.toDTO(service.save(cidade),CidadeListagemCompleta.class);
         } catch (EntidadeNaoEncontradaException e) {
             throw new EntidadeNaoEncontradaException(e.getMessage());
         }
