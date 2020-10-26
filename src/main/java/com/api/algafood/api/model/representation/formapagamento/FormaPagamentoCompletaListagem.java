@@ -1,18 +1,7 @@
-package com.api.algafood.domain.model;
+package com.api.algafood.api.model.representation.formapagamento;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-
-@Entity
-@Table(name = "FORMAS_PAGAMENTO")
-public class FormaPagamento {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class FormaPagamentoCompletaListagem {
     private Long id;
-
-    @Column(name = "DESCRICAO")
-    @NotBlank
     private String descricao;
 
     public Long getId() {
