@@ -70,6 +70,18 @@ public class RestauranteController {
         return assemblers.toDTO(service.save(restaurante),RestauranteCompletaListagem.class);
     }
 
+    @PutMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long id){
+        service.ativar(id);
+    }
+
+    @DeleteMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@PathVariable Long id){
+        service.inativar(id);
+    }
+
     private void copyToDomainObject(RestauranteCompleta restauranteCompleta, Restaurante restaurante) {
     /* Para evitar Caused by: org.hibernate.HibernateException: identifier of an instance of
      * com.api.algafood.domain.model.Cozinha was altered from 1 to 2

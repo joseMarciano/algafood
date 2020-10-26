@@ -9,6 +9,7 @@ public class RestauranteCompletaListagem {
     private String nome;
     private BigDecimal taxaFrete;
     private CozinhaCompletaListagem cozinha;
+    private Boolean flAtivo;
 
     public Long getId() {
         return id;
@@ -40,5 +41,13 @@ public class RestauranteCompletaListagem {
 
     public void setCozinha(CozinhaCompletaListagem cozinha) {
         this.cozinha = cozinha;
+    }
+
+    public Boolean getFlAtivo() {
+        return flAtivo;
+    }
+
+    public void setFlAtivo(Boolean flAtivo) {
+        this.flAtivo = flAtivo;
     }
 }

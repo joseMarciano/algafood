@@ -31,9 +31,23 @@ public class RestauranteService {
         return repository.save(restaurante);
     }
 
+    @Transactional
+    public void ativar(Long id){
+        var restaurante = findById(id);
+        restaurante.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long id){
+        var restaurante = findById(id);
+        restaurante.inativar();
+    }
+
     public Restaurante findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
                         String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
     }
+
+
 }

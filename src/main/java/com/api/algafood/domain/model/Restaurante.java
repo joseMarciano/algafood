@@ -34,6 +34,9 @@ public class Restaurante {
     @NotNull
     private BigDecimal taxaFrete;
 
+    @Column(name = "FL_ATIVO")
+    private Boolean flAtivo;
+
     /*Fazendo validação em cascata ---> Só colocando
      *valid ele entra na entidade e faz as validações que estão la dentro
      */
@@ -60,6 +63,13 @@ public class Restaurante {
     @Embedded
     private DataHoraCadastroAtualizacao dataHoraCadastroAtualizacao = new DataHoraCadastroAtualizacao();
 
+    public void ativar(){
+        setFlAtivo(true);
+    }
+
+    public void inativar(){
+        setFlAtivo(false);
+    }
 
     public Long getId() {
         return id;
@@ -123,6 +133,14 @@ public class Restaurante {
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+
+    public Boolean getFlAtivo() {
+        return flAtivo;
+    }
+
+    public void setFlAtivo(Boolean flAtivo) {
+        this.flAtivo = flAtivo;
     }
 
     @Override
