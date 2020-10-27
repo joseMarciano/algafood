@@ -1,5 +1,6 @@
 package com.api.algafood.api.model.representation.restaurante;
 
+import com.api.algafood.api.model.representation.endereco.EnderecoCompletaListagem;
 import com.api.algafood.api.model.representation.cozinha.CozinhaCompletaListagem;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ public class RestauranteCompletaListagem {
     private BigDecimal taxaFrete;
     private CozinhaCompletaListagem cozinha;
     private Boolean flAtivo;
+    private EnderecoCompletaListagem endereco;
 
     public Long getId() {
         return id;
@@ -49,5 +51,13 @@ public class RestauranteCompletaListagem {
 
     public void setFlAtivo(Boolean flAtivo) {
         this.flAtivo = flAtivo;
+    }
+
+    public EnderecoCompletaListagem getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(EnderecoCompletaListagem endereco) {
+        this.endereco = endereco;
     }
 }

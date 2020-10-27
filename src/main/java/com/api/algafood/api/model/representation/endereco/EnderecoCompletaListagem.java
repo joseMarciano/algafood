@@ -1,30 +1,21 @@
-package com.api.algafood.domain.model.embeddable;
+package com.api.algafood.api.model.representation.endereco;
 
-import com.api.algafood.domain.model.Cidade;
+import com.api.algafood.api.model.representation.cidade.CidadeListagemSimples;
 
-import javax.persistence.*;
+public class EnderecoCompletaListagem {
 
-@Embeddable
-public class Endereco {
-
-    @Column(name = "ENDERECO_CEP")
     private String cep;
 
-    @Column(name = "ENDERECO_LOGRADOURO")
     private String logradouro;
 
-    @Column(name = "ENDERECO_NUMERO")
     private String numero;
 
-    @Column(name = "ENDERECO_COMPLEMENTO")
     private String complemento;
 
-    @Column(name = "ENDERECO_BAIRRO")
     private String bairro;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ID_ENDERECO_CIDADE")
-    private Cidade cidade;
+    private CidadeListagemSimples cidade;
+
 
     public String getCep() {
         return cep;
@@ -66,11 +57,12 @@ public class Endereco {
         this.bairro = bairro;
     }
 
-    public Cidade getCidade() {
+    public CidadeListagemSimples getCidade() {
         return cidade;
     }
 
-    public void setCidade(Cidade cidade) {
+    public void setCidade(CidadeListagemSimples cidade) {
         this.cidade = cidade;
     }
 }
+
