@@ -53,7 +53,7 @@ public class CidadeService {
 
     public Cidade findById(Long id) {
         return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format("Entity with identifier %d not found", id)));
+                String.format("Entity 'Cidade' with identifier %d not found", id)));
     }
 }
 

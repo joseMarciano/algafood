@@ -5,6 +5,7 @@ import com.api.algafood.api.model.representation.restaurante.RestauranteCompleta
 import com.api.algafood.api.model.representation.restaurante.RestauranteCompletaListagem;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
+import com.api.algafood.domain.model.Cidade;
 import com.api.algafood.domain.model.Cozinha;
 import com.api.algafood.domain.model.Restaurante;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
@@ -63,11 +64,15 @@ public class RestauranteController {
 
     @PutMapping("/{id}")
     public RestauranteCompletaListagem update(@PathVariable Long id,
-                                              @RequestBody RestauranteCompleta restauranteCompleta) {
+                                              @RequestBody @Valid RestauranteCompleta restauranteCompleta) {
+        try{
+            var restaurante = service.findById(id);
+            copyToDomainObject(restauranteCompleta,restaurante);
+            return assemblers.toDTO(service.save(restaurante),RestauranteCompletaListagem.class);
+        }catch (EntidadeNaoEncontradaException e){
+            throw new NegocioException(e.getMessage());
+        }
 
-        var restaurante = service.findById(id);
-        copyToDomainObject(restauranteCompleta,restaurante);
-        return assemblers.toDTO(service.save(restaurante),RestauranteCompletaListagem.class);
     }
 
     @PutMapping("/{id}/ativo")
@@ -85,11 +90,11 @@ public class RestauranteController {
     private void copyToDomainObject(RestauranteCompleta restauranteCompleta, Restaurante restaurante) {
     /* Para evitar Caused by: org.hibernate.HibernateException: identifier of an instance of
      * com.api.algafood.domain.model.Cozinha was altered from 1 to 2
-     * Poderia ser resolvido assim: restaurante.setCozinha(new Cozinha()), mas como estou com problemas com o
-     * retorno do nome da cozinha = null no json, encontrei essa maneira de contornar o problema
-     */
-        Cozinha cozinha = cozinhaService.findById(restauranteCompleta.getCozinha().getId());
-        restaurante.setCozinha(cozinha);
+    */
+        restaurante.setCozinha(new Cozinha());
+        if(restaurante.getEndereco() != null){
+            restaurante.getEndereco().setCidade(new Cidade());
+        }
         modelMapper.map(restauranteCompleta, restaurante);
     }
 

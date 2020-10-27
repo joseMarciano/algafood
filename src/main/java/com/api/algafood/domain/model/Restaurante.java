@@ -35,7 +35,7 @@ public class Restaurante {
     private BigDecimal taxaFrete;
 
     @Column(name = "FL_ATIVO")
-    private Boolean flAtivo;
+    private Boolean flAtivo = Boolean.TRUE;
 
     /*Fazendo validação em cascata ---> Só colocando
      *valid ele entra na entidade e faz as validações que estão la dentro

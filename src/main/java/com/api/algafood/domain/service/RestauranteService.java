@@ -18,16 +18,24 @@ public class RestauranteService {
 
     private RestauranteRepository repository;
     private CozinhaService cozinhaService;
+    private CidadeService cidadeService;
 
     public RestauranteService(RestauranteRepository repository,
-                              CozinhaService cozinhaService) {
+                              CozinhaService cozinhaService,
+                              CidadeService cidadeService) {
         this.repository = repository;
         this.cozinhaService = cozinhaService;
+        this.cidadeService = cidadeService;
     }
 
     @Transactional
     public Restaurante save(Restaurante restaurante) {
-        cozinhaService.findById(restaurante.getCozinha().getId());
+        //Resolvendo o problema de retornar a prop cozinha e cidade(Dentro de endereco) NULL  na hora de salvar ou update
+        var cozinha = cozinhaService.findById(restaurante.getCozinha().getId());
+        var enderecoCidade = cidadeService.findById(restaurante.getEndereco().getCidade().getId());
+        restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(enderecoCidade);
+
         return repository.save(restaurante);
     }
 

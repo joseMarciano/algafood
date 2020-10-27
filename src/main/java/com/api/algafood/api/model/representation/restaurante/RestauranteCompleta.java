@@ -2,6 +2,7 @@ package com.api.algafood.api.model.representation.restaurante;
 
 
 import com.api.algafood.api.model.representation.cozinha.CozinhaAssociacao;
+import com.api.algafood.api.model.representation.endereco.EnderecoCompleta;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +23,9 @@ public class RestauranteCompleta {
     @NotNull
     private CozinhaAssociacao cozinha;
 
+    @Valid
+    @NotNull
+    EnderecoCompleta endereco;
 
     public String getNome() {
         return nome;
@@ -45,5 +49,13 @@ public class RestauranteCompleta {
 
     public void setCozinha(CozinhaAssociacao cozinha) {
         this.cozinha = cozinha;
+    }
+
+    public EnderecoCompleta getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(EnderecoCompleta endereco) {
+        this.endereco = endereco;
     }
 }
