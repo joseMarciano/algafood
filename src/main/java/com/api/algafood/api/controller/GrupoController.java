@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -46,7 +47,7 @@ public class GrupoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GrupoCompletaListagem save(@RequestBody GrupoCompleta grupoCompleta) {
+    public GrupoCompletaListagem save(@RequestBody @Valid GrupoCompleta grupoCompleta) {
         var grupo = assemblers.toDomainObject(grupoCompleta, Grupo.class);
         return assemblers.toDTO(service.save(grupo), GrupoCompletaListagem.class);
     }
