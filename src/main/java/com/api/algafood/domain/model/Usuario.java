@@ -37,6 +37,10 @@ public class Usuario {
     private List<Grupo> grupos = new ArrayList<>();
 
 
+    public Boolean senhaCoincideCom(String senha){
+        return getSenha().equals(senha);
+    }
+
     public Long getId() {
         return id;
     }
