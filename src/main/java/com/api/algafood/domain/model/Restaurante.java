@@ -13,9 +13,7 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @ValorZeroIncluirDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
@@ -61,7 +59,7 @@ public class Restaurante {
                                                                      pagamento em restaurante*/
 
     @OneToMany(mappedBy = "restaurante")
-    private List<Produto> produtos = new ArrayList<>();
+    private Set<Produto> produtos = new HashSet<>();
 
     @Embedded
     private Endereco endereco;
@@ -133,11 +131,11 @@ public class Restaurante {
         this.dataHoraCadastroAtualizacao = dataHoraCadastroAtualizacao;
     }
 
-    public List<Produto> getProdutos() {
+    public Set<Produto> getProdutos() {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
+    public void setProdutos(Set<Produto> produtos) {
         this.produtos = produtos;
     }
 

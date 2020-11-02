@@ -11,6 +11,9 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "NOME")
+    private String nome;
+
     @Column(name = "DESCRICAO")
     private String descricao;
 
@@ -30,6 +33,14 @@ public class Produto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDescricao() {
@@ -53,7 +64,11 @@ public class Produto {
     }
 
     public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+        if(ativo == null){
+            this.ativo = Boolean.TRUE;
+        }else {
+            this.ativo = ativo;
+        }
     }
 
     public Restaurante getRestaurante() {
