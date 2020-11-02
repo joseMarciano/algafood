@@ -11,6 +11,7 @@ public class RestauranteCompletaListagem {
     private BigDecimal taxaFrete;
     private CozinhaCompletaListagem cozinha;
     private Boolean flAtivo;
+    private Boolean aberto;
     private EnderecoCompletaListagem endereco;
 
     public Long getId() {
@@ -59,5 +60,13 @@ public class RestauranteCompletaListagem {
 
     public void setEndereco(EnderecoCompletaListagem endereco) {
         this.endereco = endereco;
+    }
+
+    public Boolean getAberto() {
+        return aberto;
+    }
+
+    public void setAberto(Boolean aberto) {
+        this.aberto = aberto;
     }
 }

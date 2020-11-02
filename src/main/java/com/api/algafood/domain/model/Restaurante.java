@@ -47,6 +47,9 @@ public class Restaurante {
     @JoinColumn(name = "ID_COZINHAS")
     private Cozinha cozinha;
 
+    @Column(name = "FL_ABERTO")
+    private Boolean aberto = Boolean.TRUE;
+
 
     @ManyToMany
     @JoinTable(name = "RESTAURANTES_FORMAS_PAGAMENTO",
@@ -147,6 +150,14 @@ public class Restaurante {
         this.flAtivo = flAtivo;
     }
 
+    public Boolean getAberto() {
+        return aberto;
+    }
+
+    public void setAberto(Boolean aberto) {
+        this.aberto = aberto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -168,5 +179,13 @@ public class Restaurante {
 
     public Boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
         return getFormasPagamento().add(formaPagamento);
+    }
+
+    public void abrir(){
+        setAberto(Boolean.TRUE);
+    }
+
+    public void fechar(){
+        setAberto(Boolean.FALSE);
     }
 }

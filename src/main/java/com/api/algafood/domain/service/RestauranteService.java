@@ -81,4 +81,21 @@ public class RestauranteService {
         restaurante.adicionarFormaPagamento(formaPagamento);
         return restaurante.getFormasPagamento();
     }
+
+    @Transactional
+    public void abrir(Long id){
+        /*Lembrando que não é preciso o uso do save visto que a variável
+         *restaurante está no contexto do jpa e a com o a anotação @transactional, é feito um update
+         * automaticamente
+         */
+        var restaurante = findById(id);
+
+        restaurante.abrir();
+    }
+    @Transactional
+    public void fechar(Long id){
+        var restaurante = findById(id);
+
+        restaurante.fechar();
+    }
 }

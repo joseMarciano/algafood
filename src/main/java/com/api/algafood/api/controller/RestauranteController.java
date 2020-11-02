@@ -87,6 +87,18 @@ public class RestauranteController {
         service.inativar(id);
     }
 
+    @PutMapping("/{id}/abertura")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void abertura(@PathVariable Long id){
+        service.abrir(id);
+    }
+
+    @PutMapping("/{id}/fechamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void fechamento(@PathVariable Long id){
+        service.fechar(id);
+    }
+
     private void copyToDomainObject(RestauranteCompleta restauranteCompleta, Restaurante restaurante) {
     /* Para evitar Caused by: org.hibernate.HibernateException: identifier of an instance of
      * com.api.algafood.domain.model.Cozinha was altered from 1 to 2
@@ -97,5 +109,6 @@ public class RestauranteController {
         }
         modelMapper.map(restauranteCompleta, restaurante);
     }
+
 
 }
