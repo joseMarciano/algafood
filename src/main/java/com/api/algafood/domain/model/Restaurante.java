@@ -14,7 +14,9 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @ValorZeroIncluirDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Entity
@@ -52,7 +54,11 @@ public class Restaurante {
     @JoinTable(name = "RESTAURANTES_FORMAS_PAGAMENTO",
             joinColumns = @JoinColumn(name = "ID_RESTAURANTES"),
             inverseJoinColumns = @JoinColumn(name = "ID_FORMAS_PAGAMENTO"))
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+    private Set<FormaPagamento> formasPagamento = new HashSet<>(); /*Set não permite que objetos
+                                                                     considerados iguais pelo
+                                                                     .equals/.hashCode sejam adicionados
+                                                                     no conjunto, evitando duplicidade de formas de
+                                                                     pagamento em restaurante*/
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
@@ -103,11 +109,11 @@ public class Restaurante {
         this.cozinha = cozinha;
     }
 
-    public List<FormaPagamento> getFormasPagamento() {
+    public Set<FormaPagamento> getFormasPagamento() {
         return formasPagamento;
     }
 
-    public void setFormasPagamento(List<FormaPagamento> formasPagamento) {
+    public void setFormasPagamento(Set<FormaPagamento> formasPagamento) {
         this.formasPagamento = formasPagamento;
     }
 
@@ -156,5 +162,13 @@ public class Restaurante {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public Boolean removerFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormasPagamento().remove(formaPagamento);
+    }
+
+    public Boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormasPagamento().add(formaPagamento);
     }
 }

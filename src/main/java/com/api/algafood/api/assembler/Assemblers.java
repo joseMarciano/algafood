@@ -1,9 +1,9 @@
 package com.api.algafood.api.assembler;
 
-import com.api.algafood.domain.repository.CozinhaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,11 +11,9 @@ import java.util.stream.Collectors;
 public class Assemblers<ENTITY,OUTPUT,INPUT> implements Converter<ENTITY, OUTPUT, INPUT> {
 
     private ModelMapper modelMapper;
-    private CozinhaRepository cozinhaRepository;
 
-    public Assemblers(ModelMapper modelMapper, CozinhaRepository cozinhaRepository) {
+    public Assemblers(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        this.cozinhaRepository = cozinhaRepository;
     }
 
     @Override
@@ -29,7 +27,7 @@ public class Assemblers<ENTITY,OUTPUT,INPUT> implements Converter<ENTITY, OUTPUT
     }
 
     @Override
-    public List<OUTPUT> toCollectionDTO(List<ENTITY> list, Class<OUTPUT> type) {
+    public List<OUTPUT> toCollectionDTO(Collection<ENTITY> list, Class<OUTPUT> type) {
         return list.stream().map(item -> toDTO(item,type)).collect(Collectors.toList());
     }
 }
