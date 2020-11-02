@@ -19,7 +19,11 @@ public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> i
 
     }
 
-//    @Override
+    @Override
+    public void detach(T entity) {
+        manager.detach(entity);
+    }
+    //    @Override
 //    public Optional<T> buscarPrimeiro() {
 //        var jpql = "from Restaurante" ;
 //

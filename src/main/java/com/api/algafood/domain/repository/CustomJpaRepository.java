@@ -6,6 +6,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface CustomJpaRepository<T, ID> extends JpaRepository<T, ID> {
 
-    //T findEntityById(Long id);
+    void detach(T entity); // implementando method para desanexar a entidade do contexto do jpa para
 
 }

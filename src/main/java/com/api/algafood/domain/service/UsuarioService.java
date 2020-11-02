@@ -10,6 +10,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
 
@@ -35,6 +37,7 @@ public class UsuarioService {
 
     @Transactional
     public Usuario save(Usuario usuario){
+        hasEqualEmail(usuario);
         return repository.save(usuario);
     }
 
@@ -59,6 +62,15 @@ public class UsuarioService {
         }
         usuario.setSenha(novaSenha);
         return save(usuario);
+    }
+
+    public void hasEqualEmail(Usuario usuario){
+        repository.detach(usuario); // para desanexar a entidade do contexto do JPA e não dar problema quand for fazer um select dentro de um @Transactional que eu tenha algum update pendeente
+        Optional<Usuario> usuarioEmail = repository.findByEmail(usuario.getEmail());
+        if(usuarioEmail.isPresent() && !usuarioEmail.get().equals(usuario)){
+            throw new NegocioException(
+                    String.format("Já existe um usuário cadastrado com o e-mail %s",usuario.getEmail()));
+        }
     }
 
 }
