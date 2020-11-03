@@ -19,18 +19,21 @@ public class GrupoService {
             "Entity 'Grupo' with identifier %d is in use";
 
     private GrupoRepository repository;
+    private PermissaoService permissaoService;
 
-    public GrupoService(GrupoRepository repository) {
+    public GrupoService(GrupoRepository repository,
+                        PermissaoService permissaoService) {
         this.repository = repository;
+        this.permissaoService = permissaoService;
     }
 
-    public Grupo findById(Long id){
+    public Grupo findById(Long id) {
         return repository.findById(id).orElseThrow(() ->
-                new EntidadeNaoEncontradaException(String.format(MSG_GRUPO_NAO_ENCONTRADO,id)));
+                new EntidadeNaoEncontradaException(String.format(MSG_GRUPO_NAO_ENCONTRADO, id)));
     }
 
     @Transactional
-    public Grupo save(Grupo grupo){
+    public Grupo save(Grupo grupo) {
         return repository.save(grupo);
     }
 
@@ -46,5 +49,19 @@ public class GrupoService {
             throw new EntidadeEmUsoException(
                     String.format(MSG_GRUPO_EM_USO, id));
         }
+    }
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+        var grupo = findById(grupoId);
+        var permissao = permissaoService.findById(permissaoId);
+        grupo.removerPermissao(permissao);
+    }
+
+    @Transactional
+    public void associarPermissao(Long grupoId, Long permissaoId){
+        var grupo = findById(grupoId);
+        var permissao = permissaoService.findById(permissaoId);
+        grupo.adicionarPermissao(permissao);
     }
 }
