@@ -3,6 +3,7 @@ package com.api.algafood.domain.service;
 import com.api.algafood.domain.Exception.EntidadeEmUsoException;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
+import com.api.algafood.domain.model.Grupo;
 import com.api.algafood.domain.model.Usuario;
 import com.api.algafood.domain.repository.UsuarioRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -25,9 +27,12 @@ public class UsuarioService {
             "Email atual já está cadastrado";
 
     private UsuarioRepository repository;
+    private GrupoService grupoService;
 
-    public UsuarioService(UsuarioRepository repository) {
+    public UsuarioService(UsuarioRepository repository,
+                          GrupoService grupoService) {
         this.repository = repository;
+        this.grupoService = grupoService;
     }
 
     public Usuario findById(Long id){
@@ -55,6 +60,12 @@ public class UsuarioService {
         }
     }
 
+
+    public Collection<Grupo> listAllGrupos(Long usuarioId){
+        var usuario = findById(usuarioId);
+        return usuario.getGrupos();
+    }
+
     public Usuario updateSenha(Long id, String senhaAtual, String novaSenha){
         var usuario = findById(id);
         if(!usuario.senhaCoincideCom(senhaAtual)){
@@ -73,4 +84,17 @@ public class UsuarioService {
         }
     }
 
+    @Transactional
+    public void associarGrupo(Long usuarioId, Long grupoId) {
+        var usuario = findById(usuarioId);
+        var grupo = grupoService.findById(grupoId);
+        usuario.adicionarGrupo(grupo);
+    }
+
+    @Transactional
+    public void desassociarGrupo(Long usuarioId, Long grupoId) {
+        var usuario = findById(usuarioId);
+        var grupo = grupoService.findById(grupoId);
+        usuario.removerGrupo(grupo);
+    }
 }
