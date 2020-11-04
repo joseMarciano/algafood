@@ -4,10 +4,12 @@ package com.api.algafood.domain.service;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.model.FormaPagamento;
 import com.api.algafood.domain.model.Restaurante;
+import com.api.algafood.domain.model.Usuario;
 import com.api.algafood.domain.repository.restaurante.RestauranteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Service
@@ -22,15 +24,18 @@ public class RestauranteService {
     private RestauranteRepository repository;
     private CozinhaService cozinhaService;
     private CidadeService cidadeService;
+    private UsuarioService usuarioService;
     private FormaPagamentoService formaPagamentoService;
 
     public RestauranteService(RestauranteRepository repository,
                               CozinhaService cozinhaService,
                               CidadeService cidadeService,
+                              UsuarioService usuarioService,
                               FormaPagamentoService formaPagamentoService) {
         this.repository = repository;
         this.cozinhaService = cozinhaService;
         this.cidadeService = cidadeService;
+        this.usuarioService = usuarioService;
         this.formaPagamentoService = formaPagamentoService;
     }
 
@@ -97,5 +102,24 @@ public class RestauranteService {
         var restaurante = findById(id);
 
         restaurante.fechar();
+    }
+
+    public Collection<Usuario> listAllUsuarios(Long restauranteId) {
+        var restaurante = findById(restauranteId);
+        return restaurante.getUsuarios();
+    }
+
+    @Transactional
+    public void associarUsuario(Long restauranteId, Long usuarioId) {
+        var restaurante = findById(restauranteId);
+        var usuario = usuarioService.findById(usuarioId);
+        restaurante.associarUsuario(usuario);
+    }
+
+    @Transactional
+    public void desassociarUsuario(Long restauranteId, Long usuarioId) {
+        var restaurante = findById(restauranteId);
+        var usuario = usuarioService.findById(usuarioId);
+        restaurante.desassociarUsuario(usuario);
     }
 }

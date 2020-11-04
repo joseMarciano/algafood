@@ -61,6 +61,12 @@ public class Restaurante {
                                                                      no conjunto, evitando duplicidade de formas de
                                                                      pagamento em restaurante*/
 
+    @ManyToMany
+    @JoinTable(name = "RESTAURANTES_USUARIOS",
+            joinColumns = @JoinColumn(name = "ID_RESTAURANTES"),
+            inverseJoinColumns = @JoinColumn(name = "ID_USUARIOS"))
+    private Set<Usuario> usuarios = new HashSet<>();
+
     @OneToMany(mappedBy = "restaurante")
     private Set<Produto> produtos = new HashSet<>();
 
@@ -70,11 +76,11 @@ public class Restaurante {
     @Embedded
     private DataHoraCadastroAtualizacao dataHoraCadastroAtualizacao = new DataHoraCadastroAtualizacao();
 
-    public void ativar(){
+    public void ativar() {
         setFlAtivo(true);
     }
 
-    public void inativar(){
+    public void inativar() {
         setFlAtivo(false);
     }
 
@@ -158,6 +164,14 @@ public class Restaurante {
         this.aberto = aberto;
     }
 
+    public Set<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Set<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -181,11 +195,18 @@ public class Restaurante {
         return getFormasPagamento().add(formaPagamento);
     }
 
-    public void abrir(){
+    public void abrir() {
         setAberto(Boolean.TRUE);
     }
 
-    public void fechar(){
+    public void fechar() {
         setAberto(Boolean.FALSE);
+    }
+
+    public Boolean associarUsuario(Usuario usuario) {
+        return getUsuarios().add(usuario);
+    }
+    public Boolean desassociarUsuario(Usuario usuario) {
+        return getUsuarios().remove(usuario);
     }
 }
