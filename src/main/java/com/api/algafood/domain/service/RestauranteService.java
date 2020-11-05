@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -57,9 +58,21 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void ativarEmMassa(List<Long> restaurantesId) {
+        restaurantesId.forEach(this::ativar);
+    }
+
+
+    @Transactional
     public void inativar(Long id){
         var restaurante = findById(id);
         restaurante.inativar();
+    }
+
+
+    @Transactional
+    public void inativarEmMassa(List<Long> restaurantesId) {
+        restaurantesId.forEach(this::inativar);
     }
 
     public Restaurante findById(Long id) {
@@ -122,4 +135,5 @@ public class RestauranteService {
         var usuario = usuarioService.findById(usuarioId);
         restaurante.desassociarUsuario(usuario);
     }
+
 }

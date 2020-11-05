@@ -81,11 +81,33 @@ public class RestauranteController {
         service.ativar(id);
     }
 
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarEmMassa(@RequestBody List<Long> restaurantesId){
+        try{
+            service.ativarEmMassa(restaurantesId);
+        }catch (EntidadeNaoEncontradaException e ){
+            throw new NegocioException(e.getMessage(),e);
+        }
+    }
+
     @DeleteMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long id){
         service.inativar(id);
     }
+
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativarEmMassa(@RequestBody List<Long> restaurantesId){
+        try{
+            service.inativarEmMassa(restaurantesId);
+        }catch (EntidadeNaoEncontradaException e ){
+            throw new NegocioException(e.getMessage(),e);
+        }
+
+    }
+
 
     @PutMapping("/{id}/abertura")
     @ResponseStatus(HttpStatus.NO_CONTENT)
