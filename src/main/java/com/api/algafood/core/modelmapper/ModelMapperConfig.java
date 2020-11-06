@@ -29,6 +29,7 @@ public class ModelMapperConfig {
          */
         TypeMap<Endereco, EnderecoCompletaListagem> enderecoToRepresentation =
                 modelMapper.createTypeMap(Endereco.class, EnderecoCompletaListagem.class);
+
         enderecoToRepresentation.<String>addMapping(
                 endereco -> {
                     //

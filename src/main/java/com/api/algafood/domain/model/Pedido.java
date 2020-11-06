@@ -19,7 +19,8 @@ public class Pedido {
     private Long id;
 
     @Column(name = "STATUS")
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
