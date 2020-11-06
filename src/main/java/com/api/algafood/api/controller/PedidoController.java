@@ -3,6 +3,7 @@ package com.api.algafood.api.controller;
 import com.api.algafood.api.assembler.Converter;
 import com.api.algafood.api.model.representation.pedido.PedidoCompleta;
 import com.api.algafood.api.model.representation.pedido.PedidoListagem;
+import com.api.algafood.api.model.representation.pedido.PedidoListagemSimples;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Pedido;
@@ -21,28 +22,31 @@ public class PedidoController {
 
     private PedidoService service;
     private PedidoRepository repository;
-    private Converter<Pedido, PedidoListagem, PedidoCompleta> assemblers;
+    private Converter<Pedido, PedidoListagem, PedidoCompleta> assemblerListagem;
+    private Converter<Pedido, PedidoListagemSimples, PedidoCompleta> assemblerListagemSimples;
 
     public PedidoController(PedidoService service,
                             PedidoRepository repository,
-                            Converter<Pedido, PedidoListagem, PedidoCompleta> assemblers) {
+                            Converter<Pedido, PedidoListagem, PedidoCompleta> assemblerListagem,
+                            Converter<Pedido, PedidoListagemSimples, PedidoCompleta> assemblerListagemSimples) {
         this.service = service;
         this.repository = repository;
-        this.assemblers = assemblers;
+        this.assemblerListagem = assemblerListagem;
+        this.assemblerListagemSimples = assemblerListagemSimples;
     }
 
     @GetMapping("/{id}")
     public PedidoListagem findById(@PathVariable Long id) {
         try {
-            return assemblers.toDTO(service.findById(id), PedidoListagem.class);
+            return assemblerListagem.toDTO(service.findById(id), PedidoListagem.class);
         }catch (EntidadeNaoEncontradaException e){
             throw new NegocioException(e.getMessage(),e);
         }
     }
 
     @GetMapping
-    public List<PedidoListagem> findAll() {
-        return assemblers.toCollectionDTO(repository.findAll(), PedidoListagem.class);
+    public List<PedidoListagemSimples> findAll() {
+        return assemblerListagemSimples.toCollectionDTO(repository.findAll(), PedidoListagemSimples.class);
     }
 
 }

@@ -22,7 +22,7 @@ public class Endereco {
     @Column(name = "ENDERECO_BAIRRO")
     private String bairro;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ENDERECO_CIDADE")
     private Cidade cidade;
 
