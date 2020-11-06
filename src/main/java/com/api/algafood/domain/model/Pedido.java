@@ -173,4 +173,18 @@ public class Pedido {
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
     }
+
+    public void calcularValorTotal(){
+        this.subTotal = getItens().stream().map(itemPedido -> itemPedido.getPrecoTotal())
+        .reduce(BigDecimal.ZERO,BigDecimal::add);
+
+        this.valorTotal = this.subTotal.add(this.taxaFrete);
+    }
+    public void definirTaxaFrete(){
+        setTaxaFrete(getRestaurante().getTaxaFrete());
+    }
+    public void atribuirPedidoAosItens(){
+       getItens().forEach(itemPedido -> itemPedido.setPedido(this));
+    }
+
 }
