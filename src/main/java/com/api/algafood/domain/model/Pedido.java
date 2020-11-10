@@ -59,7 +59,7 @@ public class Pedido {
     @JoinColumn(name = "ID_RESTAURANTES")
     private Restaurante restaurante;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
 
     public Long getId() {
@@ -175,8 +175,10 @@ public class Pedido {
     }
 
     public void calcularValorTotal(){
+        getItens().forEach(ItemPedido::calcularPrecoTotal);
+
         this.subTotal = getItens().stream().map(itemPedido -> itemPedido.getPrecoTotal())
-        .reduce(BigDecimal.ZERO,BigDecimal::add);
+        .reduce(BigDecimal::add).get();
 
         this.valorTotal = this.subTotal.add(this.taxaFrete);
     }
@@ -186,5 +188,7 @@ public class Pedido {
     public void atribuirPedidoAosItens(){
        getItens().forEach(itemPedido -> itemPedido.setPedido(this));
     }
+
+
 
 }

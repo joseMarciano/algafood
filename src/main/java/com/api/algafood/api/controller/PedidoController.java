@@ -7,13 +7,12 @@ import com.api.algafood.api.model.representation.pedido.PedidoListagemSimples;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Pedido;
+import com.api.algafood.domain.model.Usuario;
 import com.api.algafood.domain.repository.PedidoRepository;
 import com.api.algafood.domain.service.PedidoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -39,14 +38,28 @@ public class PedidoController {
     public PedidoListagem findById(@PathVariable Long id) {
         try {
             return assemblerListagem.toDTO(service.findById(id), PedidoListagem.class);
-        }catch (EntidadeNaoEncontradaException e){
-            throw new NegocioException(e.getMessage(),e);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
     @GetMapping
     public List<PedidoListagemSimples> findAll() {
         return assemblerListagemSimples.toCollectionDTO(repository.findAll(), PedidoListagemSimples.class);
+    }
+
+    @PostMapping
+    public PedidoListagem create(@Valid @RequestBody PedidoCompleta pedidoCompleta) {
+        try {
+            Pedido novoPedido = assemblerListagem.toDomainObject(pedidoCompleta, Pedido.class);
+            // TODO pegar usuário autenticado
+            novoPedido.setUsuario(new Usuario());
+            novoPedido.getUsuario().setId(1L);
+            novoPedido = service.emitir(novoPedido);
+            return assemblerListagem.toDTO(novoPedido, PedidoListagem.class);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
 }
