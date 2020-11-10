@@ -3,9 +3,12 @@ package com.api.algafood.domain.service;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Pedido;
+import com.api.algafood.domain.model.enums.StatusPedido;
 import com.api.algafood.domain.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.OffsetDateTime;
 
 @Service
 public class PedidoService {
@@ -82,5 +85,19 @@ public class PedidoService {
             item.setPrecoUnitario(produto.getPreco());
 
         });
+    }
+
+    @Transactional
+    public void confirmar(Long id){
+        var pedido = findById(id);
+
+        if(pedido.getStatus() != StatusPedido.CRIADO){
+            throw new NegocioException(
+                    String.format(
+                            "Status do pedido %s não pode ser alterado de %s para %s",
+                            pedido.getId(),pedido.getStatus(),StatusPedido.CONFIRMADO.getDescricao()));
+        }
+        pedido.setStatus(StatusPedido.CONFIRMADO);
+        pedido.setDataConfirmacao(OffsetDateTime.now());
     }
 }

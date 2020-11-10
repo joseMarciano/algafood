@@ -10,6 +10,7 @@ import com.api.algafood.domain.model.Pedido;
 import com.api.algafood.domain.model.Usuario;
 import com.api.algafood.domain.repository.PedidoRepository;
 import com.api.algafood.domain.service.PedidoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -62,4 +63,9 @@ public class PedidoController {
         }
     }
 
+    @PutMapping("/{id}/confirmacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void confirmar(@PathVariable Long id){
+        service.confirmar(id);
+    }
 }
