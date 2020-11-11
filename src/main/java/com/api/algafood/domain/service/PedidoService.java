@@ -3,12 +3,9 @@ package com.api.algafood.domain.service;
 import com.api.algafood.domain.Exception.EntidadeNaoEncontradaException;
 import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.Pedido;
-import com.api.algafood.domain.model.enums.StatusPedido;
 import com.api.algafood.domain.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.OffsetDateTime;
 
 @Service
 public class PedidoService {
@@ -90,44 +87,18 @@ public class PedidoService {
     @Transactional
     public void confirmar(Long id){
         var pedido = findById(id);
-
-        if(pedido.getStatus() != StatusPedido.CRIADO){
-            throw new NegocioException(
-                    String.format(
-                            "Status do pedido %s não pode ser alterado de %s para %s",
-                            pedido.getId(),pedido.getStatus().getDescricao(),StatusPedido.CONFIRMADO.getDescricao()));
-        }
-        pedido.setStatus(StatusPedido.CONFIRMADO);
-        pedido.setDataConfirmacao(OffsetDateTime.now());
+        pedido.confirmar();
     }
 
     @Transactional
     public void entregar(Long id){
         var pedido = findById(id);
-
-        if(pedido.getStatus() != StatusPedido.CONFIRMADO){
-            throw new NegocioException(
-                    String.format(
-                            "Status do pedido %s não pode ser alterado de %s para %s",
-                            pedido.getId(),pedido.getStatus().getDescricao(),StatusPedido.ENTREGUE.getDescricao()));
-        }
-
-        pedido.setStatus(StatusPedido.ENTREGUE);
-        pedido.setDataEntrega(OffsetDateTime.now());
+        pedido.entregar();
     }
     @Transactional
     public void cancelar(Long id){
         var pedido = findById(id);
-
-        if(pedido.getStatus() != StatusPedido.CRIADO){
-            throw new NegocioException(
-                    String.format(
-                            "Status do pedido %s não pode ser alterado de %s para %s",
-                            pedido.getId(),pedido.getStatus().getDescricao(),StatusPedido.CANCELADO.getDescricao()));
-        }
-
-        pedido.setStatus(StatusPedido.CANCELADO);
-        pedido.setDataCancelamento(OffsetDateTime.now());
+        pedido.cancelar();
     }
 
 

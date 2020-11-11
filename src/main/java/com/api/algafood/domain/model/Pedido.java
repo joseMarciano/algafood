@@ -1,5 +1,6 @@
 package com.api.algafood.domain.model;
 
+import com.api.algafood.domain.Exception.NegocioException;
 import com.api.algafood.domain.model.embeddable.Endereco;
 import com.api.algafood.domain.model.enums.StatusPedido;
 import org.hibernate.annotations.CreationTimestamp;
@@ -74,8 +75,14 @@ public class Pedido {
         return status;
     }
 
-    public void setStatus(StatusPedido status) {
-        this.status = status;
+    private void setStatus(StatusPedido novoStatus) {
+        if(getStatus().naoPodeAlterarPara(novoStatus))  {
+            throw new NegocioException(
+                    String.format(
+                            "Status do pedido %s não pode ser alterado de %s para %s",
+                            getId(),getStatus().getDescricao(),novoStatus.getDescricao()));
+        }
+        this.status = novoStatus;
     }
 
     public BigDecimal getTaxaFrete() {
@@ -187,6 +194,19 @@ public class Pedido {
     }
     public void atribuirPedidoAosItens(){
        getItens().forEach(itemPedido -> itemPedido.setPedido(this));
+    }
+
+    public void confirmar(){
+        setStatus(StatusPedido.CONFIRMADO);
+        setDataConfirmacao(OffsetDateTime.now());
+    }
+    public void entregar(){
+        setStatus(StatusPedido.ENTREGUE);
+        setDataEntrega(OffsetDateTime.now());
+    }
+    public void cancelar(){
+        setStatus(StatusPedido.CANCELADO);
+        setDataCancelamento(OffsetDateTime.now());
     }
 
 
