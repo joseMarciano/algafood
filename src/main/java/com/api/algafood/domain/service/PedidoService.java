@@ -95,9 +95,41 @@ public class PedidoService {
             throw new NegocioException(
                     String.format(
                             "Status do pedido %s não pode ser alterado de %s para %s",
-                            pedido.getId(),pedido.getStatus(),StatusPedido.CONFIRMADO.getDescricao()));
+                            pedido.getId(),pedido.getStatus().getDescricao(),StatusPedido.CONFIRMADO.getDescricao()));
         }
         pedido.setStatus(StatusPedido.CONFIRMADO);
         pedido.setDataConfirmacao(OffsetDateTime.now());
     }
+
+    @Transactional
+    public void entregar(Long id){
+        var pedido = findById(id);
+
+        if(pedido.getStatus() != StatusPedido.CONFIRMADO){
+            throw new NegocioException(
+                    String.format(
+                            "Status do pedido %s não pode ser alterado de %s para %s",
+                            pedido.getId(),pedido.getStatus().getDescricao(),StatusPedido.ENTREGUE.getDescricao()));
+        }
+
+        pedido.setStatus(StatusPedido.ENTREGUE);
+        pedido.setDataEntrega(OffsetDateTime.now());
+    }
+    @Transactional
+    public void cancelar(Long id){
+        var pedido = findById(id);
+
+        if(pedido.getStatus() != StatusPedido.CRIADO){
+            throw new NegocioException(
+                    String.format(
+                            "Status do pedido %s não pode ser alterado de %s para %s",
+                            pedido.getId(),pedido.getStatus().getDescricao(),StatusPedido.CANCELADO.getDescricao()));
+        }
+
+        pedido.setStatus(StatusPedido.CANCELADO);
+        pedido.setDataCancelamento(OffsetDateTime.now());
+    }
+
+
+
 }
