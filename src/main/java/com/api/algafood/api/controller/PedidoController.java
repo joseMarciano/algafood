@@ -35,10 +35,10 @@ public class PedidoController {
         this.assemblerListagemSimples = assemblerListagemSimples;
     }
 
-    @GetMapping("/{id}")
-    public PedidoListagem findById(@PathVariable Long id) {
+    @GetMapping("/{codigo}")
+    public PedidoListagem findById(@PathVariable String codigo) {
         try {
-            return assemblerListagem.toDTO(service.findById(id), PedidoListagem.class);
+            return assemblerListagem.toDTO(service.findByCodigo(codigo), PedidoListagem.class);
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
@@ -63,17 +63,17 @@ public class PedidoController {
         }
     }
 
-    @PutMapping("/{id}/confirmacao")
+    @PutMapping("/{codigo}/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void confirmar(@PathVariable Long id){
-        service.confirmar(id);
+    public void confirmar(@PathVariable String codigo){
+        service.confirmar(codigo);
     }
 
-    @PutMapping("/{id}/entrega")
+    @PutMapping("/{codigo}/entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void entregar(@PathVariable Long id){service.entregar(id);}
+    public void entregar(@PathVariable String codigo){service.entregar(codigo);}
 
-    @PutMapping("/{id}/cancelamento")
+    @PutMapping("/{codigo}/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelamento(@PathVariable Long id){service.cancelar(id);}
+    public void cancelamento(@PathVariable String codigo){service.cancelar(codigo);}
 }

@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 public class PedidoListagemSimples {
 
     private Long id;
+    private String codigo;
     private StatusPedido status;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
@@ -83,4 +84,11 @@ public class PedidoListagemSimples {
         this.restaurante = restaurante;
     }
 
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 }

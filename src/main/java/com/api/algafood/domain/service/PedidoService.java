@@ -14,7 +14,7 @@ public class PedidoService {
             = "Entity 'Pedido' with identifier %d is in use";
 
     private static final String MSG_PEDIDO_NAO_ENCONTRADO
-            = "Entity 'Pedido' with identifier %d not found";
+            = "Entity 'Pedido' with identifier %s not found";
 
     private PedidoRepository repository;
     private CidadeService cidadeService;
@@ -38,9 +38,9 @@ public class PedidoService {
         this.produtoService = produtoService;
     }
 
-    public Pedido findById(Long id) {
-        return repository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException(String.format(MSG_PEDIDO_NAO_ENCONTRADO, id)));
+    public Pedido findByCodigo(String codigo) {
+        return repository.findByCodigo(codigo).orElseThrow(
+                () -> new EntidadeNaoEncontradaException(String.format(MSG_PEDIDO_NAO_ENCONTRADO, codigo)));
     }
 
     @Transactional
@@ -85,19 +85,19 @@ public class PedidoService {
     }
 
     @Transactional
-    public void confirmar(Long id){
-        var pedido = findById(id);
+    public void confirmar(String codigo){
+        var pedido = findByCodigo(codigo);
         pedido.confirmar();
     }
 
     @Transactional
-    public void entregar(Long id){
-        var pedido = findById(id);
+    public void entregar(String codigo){
+        var pedido = findByCodigo(codigo);
         pedido.entregar();
     }
     @Transactional
-    public void cancelar(Long id){
-        var pedido = findById(id);
+    public void cancelar(String codigo){
+        var pedido = findByCodigo(codigo);
         pedido.cancelar();
     }
 

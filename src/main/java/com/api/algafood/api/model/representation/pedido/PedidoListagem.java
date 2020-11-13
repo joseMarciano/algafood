@@ -14,6 +14,7 @@ import java.util.List;
 public class PedidoListagem {
 
     private Long id;
+    private String codigo;
     private StatusPedido status;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
@@ -139,5 +140,13 @@ public class PedidoListagem {
 
     public void setItens(List<ItemPedidoListagemSimples> itens) {
         this.itens = itens;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 }

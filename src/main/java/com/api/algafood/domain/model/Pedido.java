@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "PEDIDOS")
@@ -52,6 +53,9 @@ public class Pedido {
     @JoinColumn(name = "ID_USUARIOS")
     private Usuario usuario;
 
+    @Column(name = "CODIGO")
+    private String codigo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_FORMAS_PAGAMENTO")
     private FormaPagamento formaPagamento;
@@ -80,7 +84,7 @@ public class Pedido {
             throw new NegocioException(
                     String.format(
                             "Status do pedido %s não pode ser alterado de %s para %s",
-                            getId(),getStatus().getDescricao(),novoStatus.getDescricao()));
+                            getCodigo(),getStatus().getDescricao(),novoStatus.getDescricao()));
         }
         this.status = novoStatus;
     }
@@ -181,6 +185,14 @@ public class Pedido {
         this.itens = itens;
     }
 
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
     public void calcularValorTotal(){
         getItens().forEach(ItemPedido::calcularPrecoTotal);
 
@@ -207,6 +219,11 @@ public class Pedido {
     public void cancelar(){
         setStatus(StatusPedido.CANCELADO);
         setDataCancelamento(OffsetDateTime.now());
+    }
+
+    @PrePersist
+    private void gerarCodigo(){
+        setCodigo(UUID.randomUUID().toString());
     }
 
 
